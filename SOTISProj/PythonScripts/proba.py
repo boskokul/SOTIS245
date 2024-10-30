@@ -1,35 +1,33 @@
 from groq import Groq
 from llama_parse import LlamaParse
 
-def funkcijaLLM(tekst_njegov: str):
+def functionLLM(text: str):
     chat_completion = client.chat.completions.create(
     messages=[
         {
             "role": "user",
             "content": 
-           f"What do you think about? "
-        f"{tekst_njegov}"
-        }
-    ],
-    model="llama3-70b-8192",
-    )
-    return chat_completion.choices[0].message.content
-
-def presloviLLM(tekst_njegov: str):
-    chat_completion = client.chat.completions.create(
-    messages=[
-        {
-            "role": "user",
-            "content": 
-           f"Pretvori sledeci tekst sa srpskog jezika napisanog u cirilici u latinicno pismo na sprskom jeziku!\n"
-        "Tekst:\n"
-        f"{tekst_njegov}"
+            f"Extract all key terms and their definitions from the following text, and present the results, in this JSON format:\n"
+            "{\n"
+            "    'term': 'definition',\n"
+            "    'term2': 'definition2'\n"
+            "}\n"
+            "Additionally, use only those key extracted terms and show all relations between them based on semantic similarity and co-occurrence, in this JSON format:\n"
+            "{\n"
+            "    'term1': {\n"
+            "        'related_to': ['term2', 'term3']\n"
+            "    }\n"
+            "}\n"
+            "Text:\n"
+            f"{text}"
         
         }
     ],
     model="llama3-70b-8192",
     )
     return chat_completion.choices[0].message.content
+
+
 
 client = Groq(
         api_key="****"
@@ -39,17 +37,12 @@ parser = LlamaParse(
     	result_type="text"
     )
 
-#tekst_iz_pdf = parser.load_data("./genetika.pdf")
-#print(tekst_iz_pdf)
-#tekst_latinica = presloviLLM(tekst_iz_pdf)
-#print(tekst_latinica)
-#tekst_konacan = funkcijaLLM(tekst_latinica)
-#print(tekst_konacan)
 
 def main():
-    print("Hello from Python!")
+    tekst_iz_pdf = parser.load_data("..\\SOTISProj\\PDFs\\computers.pdf")
+    #print(tekst_iz_pdf)
      
-    print(funkcijaLLM("Nikola Jokic"))
+    print(functionLLM(tekst_iz_pdf))
 
 if __name__ == "__main__":
     main()
