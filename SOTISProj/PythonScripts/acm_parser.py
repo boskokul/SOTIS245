@@ -23,7 +23,7 @@ def html_parse(file_path):
                     parse_ul(nested_ul)  
                     hierarchy_stack.pop() 
 
-    first_ul = soup.find("ul")
+    first_ul = soup.find("div")
     if first_ul:
         parse_ul(first_ul)
 
@@ -38,4 +38,4 @@ output_file = "./acm_parse_result.json"
 with open(output_file, "w", encoding="utf-8") as json_file:
     json.dump(parse_result, json_file, indent=2)
 
-#print("Parse and write finished")
+print("Parse and write finished")
