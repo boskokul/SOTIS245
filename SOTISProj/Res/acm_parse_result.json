@@ -1,7 +1,11 @@
 [
   {
-    "term": "General and reference",
+    "term": "Information technology",
     "superior_term": null
+  },
+  {
+    "term": "General and reference",
+    "superior_term": "Information technology"
   },
   {
     "term": "Document types",
@@ -81,7 +85,7 @@
   },
   {
     "term": "Hardware",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Printed circuit boards",
@@ -981,7 +985,7 @@
   },
   {
     "term": "Computer systems organization",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Architectures",
@@ -1229,7 +1233,7 @@
   },
   {
     "term": "Networks",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Network architectures",
@@ -1701,7 +1705,7 @@
   },
   {
     "term": "Software and its engineering",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Software organization and properties",
@@ -2565,7 +2569,7 @@
   },
   {
     "term": "Theory of computation",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Models of computation",
@@ -3461,7 +3465,7 @@
   },
   {
     "term": "Mathematics of computing",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Discrete mathematics",
@@ -4057,7 +4061,7 @@
   },
   {
     "term": "Information systems",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Data management systems",
@@ -5353,7 +5357,7 @@
   },
   {
     "term": "Security and privacy",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Cryptography",
@@ -5669,7 +5673,7 @@
   },
   {
     "term": "Human-centered computing",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Human computer interaction (HCI)",
@@ -6145,7 +6149,7 @@
   },
   {
     "term": "Computing methodologies",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Symbolic and algebraic manipulation",
@@ -7253,7 +7257,7 @@
   },
   {
     "term": "Applied computing",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Electronic commerce",
@@ -7897,7 +7901,7 @@
   },
   {
     "term": "Social and professional topics",
-    "superior_term": null
+    "superior_term": "Information technology"
   },
   {
     "term": "Professional topics",
