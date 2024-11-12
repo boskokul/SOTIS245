@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SOTISProj.Services;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace SOTISProj.Controllers
 {
@@ -75,27 +76,55 @@ namespace SOTISProj.Controllers
                 FileName = "C:\\Users\\bosko\\Desktop\\SOTIS\\okruzenje\\Scripts\\python.exe",
                 Arguments = $"{scriptPath} \"{_dataService.GetPDFContent()}\" \"{_dataService.GetAcmSubTree()}\"",
                 RedirectStandardOutput = true,
-                RedirectStandardError = true, // Capture standard error
+                RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
-            //Console.WriteLine($"TEKSTCINA: {_dataService.GetPDFContent()}");
+
             string errors;
-            string TermsJSON;
+            string res;
             try
             {
                 using (var process = Process.Start(start))
                 {
                     using (var reader = process.StandardOutput)
                     {
-                        TermsJSON = reader.ReadToEnd();
+                        res = reader.ReadToEnd();
                     }
                     errors = process.StandardError.ReadToEnd(); // Capture errors
 
                     // Log output and errors for debugging
-                    if (!string.IsNullOrWhiteSpace(TermsJSON))
+                    if (!string.IsNullOrWhiteSpace(res))
                     {
-                        Debug.WriteLine($"Standard Output: {TermsJSON}");
+                        Debug.WriteLine($"Standard Output: {res}");
+                        string jsonString1 = res.Split("###")[0];
+                        string jsonString2 = res.Split("###")[1];
+
+                        jsonString1 = jsonString1.Replace('\'', '"');
+
+                        Dictionary<string, string> definitions = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString1);
+                        _dataService.SaveTermsDefinitions(definitions);
+
+                        foreach (var item in definitions)
+                        {
+                            Console.WriteLine($"{item.Key}: {item.Value}\n");
+                        }
+
+                        jsonString2 = jsonString2.Replace('\'', '"');
+
+                        var relations = JsonSerializer.Deserialize<Dictionary<string, RelatedTerms>>(jsonString2, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                        _dataService.SaveTermsRelations(relations);
+
+                        foreach (var item in relations)
+                        {
+                            Console.WriteLine($"{item.Key}:");
+                            foreach (var relatedTerm in item.Value.Related_to)
+                            {
+                                Console.WriteLine($"  - {relatedTerm}");
+                            }
+                            Console.WriteLine();
+                        }
                     }
                     if (!string.IsNullOrWhiteSpace(errors))
                     {
@@ -108,7 +137,7 @@ namespace SOTISProj.Controllers
                     return BadRequest($"Error running Python script: {errors}");
                 }
 
-                return Ok(TermsJSON);
+                return Ok(res);
             }
             catch (Exception ex)
             {
@@ -116,20 +145,25 @@ namespace SOTISProj.Controllers
             }
         }
 
-        [HttpGet("FindDefinitions")]
+        [HttpGet("FindNewRelations")]
         public IActionResult RunTermsDefinitions()
         {
+            string terms = "";
+            foreach(var t  in _dataService.GetTermsRelations())
+            {
+                terms += t.Key + ", ";
+            }
             var scriptPath = "..\\SOTISProj\\PythonScripts\\second.py";
             var start = new ProcessStartInfo
             {
                 FileName = "C:\\Users\\bosko\\Desktop\\SOTIS\\okruzenje\\Scripts\\python.exe",
-                Arguments = $"{scriptPath} \"{_dataService.GetTermsRelations()}\" \"{_dataService.GetPDFContent()}\"",
+                Arguments = $"{scriptPath} \"{terms}\" \"{_dataService.GetAcmSubTree()}\"",
                 RedirectStandardOutput = true,
-                RedirectStandardError = true, // Capture standard error
+                RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
-            //Console.WriteLine($"TEKSTCINA: {_dataService.GetPDFContent()}");
+            Console.WriteLine("AAAAAAA" +terms + "BBB");
             string errors;
             string TermsJSON;
             try
@@ -140,9 +174,8 @@ namespace SOTISProj.Controllers
                     {
                         TermsJSON = reader.ReadToEnd();
                     }
-                    errors = process.StandardError.ReadToEnd(); // Capture errors
+                    errors = process.StandardError.ReadToEnd();
 
-                    // Log output and errors for debugging
                     if (!string.IsNullOrWhiteSpace(TermsJSON))
                     {
                         Debug.WriteLine($"Standard Output: {TermsJSON}");
@@ -176,7 +209,7 @@ namespace SOTISProj.Controllers
                 FileName = "C:\\Users\\bosko\\Desktop\\SOTIS\\okruzenje\\Scripts\\python.exe",
                 Arguments = $"{scriptPath} \"{subTree}\"",
                 RedirectStandardOutput = true,
-                RedirectStandardError = true, // Capture standard error
+                RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
@@ -198,7 +231,7 @@ namespace SOTISProj.Controllers
                     if (!string.IsNullOrWhiteSpace(result))
                     {
                         Debug.WriteLine($"Standard Output: {result}");
-                        _dataService.SaveAcmSubTree(result);
+                        _dataService.SaveAcmSubTree(result.Split("###")[1]);
                     }
                     if (!string.IsNullOrWhiteSpace(errors))
                     {

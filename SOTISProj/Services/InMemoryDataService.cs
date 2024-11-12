@@ -4,7 +4,8 @@
     {
         private string _parsedPDF = "";
         private string _acmSubTree = "";
-        private string _termsRelations = "";
+        private Dictionary<string, RelatedTerms> _termsRelations = new Dictionary<string, RelatedTerms>();
+        private Dictionary<string, string> _termsDefinitions = new Dictionary<string, string>();
 
         
         public void SavePDFContent(string data)
@@ -27,14 +28,24 @@
             return _acmSubTree;
         }
 
-        public void SaveTermsRelations(string data)
+        public void SaveTermsRelations(Dictionary<string, RelatedTerms> data)
         {
             _termsRelations = data;
         }
 
-        public string GetTermsRelations()
+        public Dictionary<string, RelatedTerms> GetTermsRelations()
         {
             return _termsRelations;
+        }
+
+        public void SaveTermsDefinitions(Dictionary<string,string> data)
+        {
+            _termsDefinitions = data;
+        }
+
+        public Dictionary<string,string> GetTermsDefinitions()
+        {
+            return _termsDefinitions;
         }
     }
 

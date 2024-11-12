@@ -1,42 +1,40 @@
-from openai import OpenAI
-from os import getenv
+from groq import Groq
+from llama_parse import LlamaParse
 import sys
 import json
+import re
 
-client = OpenAI(
-  base_url="https://openrouter.ai/api/v1",
-  api_key=""
-)
+client = Groq(
+        api_key="***"
+    )
 
-completion = client.chat.completions.create(
-  model="meta-llama/llama-3.1-70b-instruct:free",
-  messages=[
-    {
-      "role": "user",
-      "content": 
-      f"Extract key terms and show relations between them based on semantic similarity in the following text while using only terms that you extracted and return results in the JSON format containing terms, definitions and relationships. And nothing else beside that please:\n"
-                "Text:\n"
-                f"{sys.argv[1]}"
-    }
-  ]
-)
+def functionLLM(terms: str, concepts: str):
+    chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "user",
+            "content": 
+            f"Find relationships between these terms and concepts based on their semantic similarity. For each term find zero or one relationship with one concept that is most similar!"
+            "\nTerms:\n"
+            f"{terms}"
+            "\nConcepts:\n"
+            f"{concepts}"
+        
+        }
+    ],
+    model="llama3-70b-8192",
+    )
+    return chat_completion.choices[0].message.content
 
-responseString = completion.choices[0].message.content
+	
+responseString = functionLLM(sys.argv[1], sys.argv[2])
+# print(sys.argv[1])
 print(responseString)
 
-# # Parse the JSON string
-# data = json.loads(responseString)
 
-# # Collect all unique terms from keys and related terms
-# terms = set(data.keys())  # Start with the main terms (keys)
-# # for key, value in data.items():
-# #     terms.update(value["related_to"])  # Add related terms from "related_to"
+    
+    
 
-# # # Convert the set to a sorted list
-# # sorted_terms = sorted(terms)
-
-# # # Print the sorted list of terms
-# print(terms)
 
 
 

@@ -10,9 +10,13 @@
 
         string GetAcmSubTree();
 
-        void SaveTermsRelations(string data);
+        void SaveTermsRelations(Dictionary<string, RelatedTerms> data);
 
-        string GetTermsRelations();
+        Dictionary<string, RelatedTerms> GetTermsRelations();
+
+        void SaveTermsDefinitions(Dictionary<string, string> data);
+
+        Dictionary<string, string> GetTermsDefinitions();
     }
 
 }

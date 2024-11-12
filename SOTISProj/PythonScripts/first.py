@@ -36,14 +36,18 @@ def functionLLM(text: str):
 
 	
 responseString = functionLLM(sys.argv[1])
-print(responseString)
+# print(responseString)
 
 matches = re.findall(r'```json\n({.*?})\n```', responseString, re.DOTALL)
 
+delimiter = True
 for match in matches:
     try:
         data = json.loads(match)
-        print(set(data.keys()))
+        print(data)
+        if delimiter == True:
+            print('###')
+        delimiter = False
     except json.JSONDecodeError as e:
         print("Error decoding JSON:", e)
         print("No JSON data found.")

@@ -1,6 +1,7 @@
 import json
 from neo4j import GraphDatabase
 import sys
+import re
 
 # Connect to the Neo4j database
 uri = "bolt://localhost:7687"  # Replace with your Neo4j URI
@@ -22,6 +23,7 @@ def get_paths(term):
         result = session.run(query, term=term)
         paths = [record["hierarchy"] for record in result]
     return paths
+
 
 # Convert the list of paths into a nested tree structure
 def build_tree(paths):
@@ -54,6 +56,18 @@ hierarchy_tree = build_tree(paths)
 # Convert to JSON and print
 json_output = json.dumps(hierarchy_tree, indent=2)
 print(json_output)
+
+pattern = r'"term":\s*"([^"]+)"'
+
+# Find all matches
+matches = re.findall(pattern, json_output)
+
+print('###')
+termsAll = set()
+# Print all term names
+for match in matches:
+    termsAll.add(match)
+print(termsAll)
 
 # Close the connection
 driver.close()

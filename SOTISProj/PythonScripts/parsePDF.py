@@ -4,7 +4,7 @@ from groq import Groq
 
 
 parser = LlamaParse(
-    	api_key="llx-***",
+    	api_key="***",
     	result_type="text"
     )
 
