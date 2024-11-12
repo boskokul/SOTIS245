@@ -1,5 +1,6 @@
 import json
 from neo4j import GraphDatabase
+import sys
 
 # Connect to the Neo4j database
 uri = "bolt://localhost:7687"  # Replace with your Neo4j URI
@@ -46,7 +47,8 @@ def build_tree(paths):
     return tree
 
 # Retrieve paths and convert them to a tree structure
-paths = get_paths("General and reference")
+paths = get_paths(sys.argv[1])
+
 hierarchy_tree = build_tree(paths)
 
 # Convert to JSON and print

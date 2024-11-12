@@ -1,3 +1,5 @@
+using SOTISProj.Services;
+
 namespace SOTISProj
 {
     public class Program
@@ -12,6 +14,9 @@ namespace SOTISProj
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddSingleton<IDataService, InMemoryDataService>();
+            builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
