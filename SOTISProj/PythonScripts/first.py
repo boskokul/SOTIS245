@@ -40,6 +40,7 @@ responseString = functionLLM(sys.argv[1])
 
 matches = re.findall(r'```json\n({.*?})\n```', responseString, re.DOTALL)
 
+
 delimiter = True
 for match in matches:
     try:
@@ -51,6 +52,9 @@ for match in matches:
     except json.JSONDecodeError as e:
         print("Error decoding JSON:", e)
         print("No JSON data found.")
+
+# print(relacije[0])
+
 
     
     

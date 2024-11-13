@@ -157,13 +157,66 @@ namespace SOTISProj.Controllers
             var start = new ProcessStartInfo
             {
                 FileName = "C:\\Users\\bosko\\Desktop\\SOTIS\\okruzenje\\Scripts\\python.exe",
-                Arguments = $"{scriptPath} \"{terms}\" \"{_dataService.GetAcmSubTree()}\"",
+                Arguments = $"{scriptPath} \"{terms}\" \"{_dataService.GetAcmSubTree()}\" \"{_dataService.GetTermsRelations()}\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
             Console.WriteLine("AAAAAAA" +terms + "BBB");
+            string errors;
+            string TermsJSON;
+            try
+            {
+                using (var process = Process.Start(start))
+                {
+                    using (var reader = process.StandardOutput)
+                    {
+                        TermsJSON = reader.ReadToEnd();
+                    }
+                    errors = process.StandardError.ReadToEnd();
+
+                    if (!string.IsNullOrWhiteSpace(TermsJSON))
+                    {
+                        Debug.WriteLine($"Standard Output: {TermsJSON}");
+                    }
+                    if (!string.IsNullOrWhiteSpace(errors))
+                    {
+                        Debug.WriteLine($"Standard Error: {errors}");
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(errors))
+                {
+                    return BadRequest($"Error running Python script: {errors}");
+                }
+
+                return Ok(TermsJSON);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet("AddRelations")]
+        public IActionResult RunTermsRelationsAdding()
+        {
+            string terms = "";
+            foreach (var t in _dataService.GetTermsRelations())
+            {
+                terms += t.Key + ", ";
+            }
+            var scriptPath = "..\\SOTISProj\\PythonScripts\\third.py";
+            var start = new ProcessStartInfo
+            {
+                FileName = "C:\\Users\\bosko\\Desktop\\SOTIS\\okruzenje\\Scripts\\python.exe",
+                Arguments = $"{scriptPath} \"{terms}\" \"{_dataService.GetTermsRelationsPairs()}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
             string errors;
             string TermsJSON;
             try

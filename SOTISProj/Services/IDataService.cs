@@ -14,6 +14,8 @@
 
         Dictionary<string, RelatedTerms> GetTermsRelations();
 
+        string GetTermsRelationsPairs();
+
         void SaveTermsDefinitions(Dictionary<string, string> data);
 
         Dictionary<string, string> GetTermsDefinitions();
