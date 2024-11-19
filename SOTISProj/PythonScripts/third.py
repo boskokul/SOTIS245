@@ -5,8 +5,20 @@ pairs = sys.argv[2].split(';')
 for p in pairs[:-1]:
     # print(p)
     pair = p.split(':')
+    # print(pair[0])
+    # print('aaaaaaaa')
     # print(pair[1])
     for_adding.append([pair[0], pair[1]])
+
+for_creating = []
+terms_defs = sys.argv[3].split(';')
+for p in terms_defs[:-1]:
+    # print(p)
+    pair = p.split(':')
+    # print(pair[0])
+    # print('sssss')
+    # print(pair[1])
+    for_creating.append([pair[0], pair[1]])
 
 
 from neo4j import GraphDatabase
@@ -16,17 +28,19 @@ URI = "bolt://localhost:7687"
 AUTH = ("neo4j", "testtest")
 
 driver = GraphDatabase.driver(URI, auth=AUTH)
+# driver = None
 
-def create_nodes_and_relationships(data):
+def create_nodes_and_relationships(data_for_creation, data):
     with driver.session() as session:
         # First pass: creation of nodes
-        for termx, concepty in data:
+        for termx, definitiony in data_for_creation:
             session.run(
                 """
-                MERGE (n:Concept {term: $term})
-                SET n.isConcept = false
+                MERGE (n:Concept {term: $term })
+                SET n.isConcept = false, n.definition = $definition
                 """,
-                term=termx
+                term=termx,
+                definition=definitiony
             )
         
         # Second pass: connecting terms to their concepts
@@ -43,7 +57,7 @@ def create_nodes_and_relationships(data):
                  
 def create():
 
-    create_nodes_and_relationships(for_adding)
+    create_nodes_and_relationships(for_creating, for_adding)
 
     driver.close()
     print("Nodes and relationships created successfully.")

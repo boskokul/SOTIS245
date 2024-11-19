@@ -211,7 +211,7 @@ namespace SOTISProj.Controllers
             var start = new ProcessStartInfo
             {
                 FileName = "C:\\Users\\bosko\\Desktop\\SOTIS\\okruzenje\\Scripts\\python.exe",
-                Arguments = $"{scriptPath} \"{terms}\" \"{_dataService.GetTermsRelationsPairs()}\"",
+                Arguments = $"{scriptPath} \"{terms}\" \"{_dataService.GetTermsRelationsPairs()}\"  \"{_dataService.GetTermsDefinitionsPairs()}\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,

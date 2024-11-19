@@ -68,6 +68,16 @@ namespace SOTISProj.Services
             }
             return res;
         }
+
+        public string GetTermsDefinitionsPairs()
+        {
+            string res = "";
+            foreach (var item in _termsDefinitions)
+            {
+                res += item.Key + ":" + item.Value + ";";
+            }
+            return res;
+        }
     }
 
 }

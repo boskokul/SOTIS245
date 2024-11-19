@@ -6,7 +6,7 @@ import re
 
 client = Groq(
         api_key="***"
-    )
+    )	
 
 def functionLLM(text: str):
     chat_completion = client.chat.completions.create(
