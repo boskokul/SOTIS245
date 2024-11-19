@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SOTISProj.Repo;
 using SOTISProj.Services;
 using System.Diagnostics;
 using System.Text.Json;
@@ -10,9 +12,11 @@ namespace SOTISProj.Controllers
     public class PythonController : ControllerBase
     {
         private readonly IDataService _dataService;
-        public PythonController(IDataService dataService)
+        private readonly MyDbContext _context;
+        public PythonController(IDataService dataService, MyDbContext context)
         {
             _dataService = dataService;
+            _context = context;
         }
         [HttpGet("parsePDF")]
         public IActionResult RunParse()
@@ -304,6 +308,13 @@ namespace SOTISProj.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+        [HttpPost("subject")] 
+        public IActionResult PostMyModel(Subject myModel) 
+        { 
+            _context.Subjects.Add(myModel); 
+            _context.SaveChanges(); 
+            return Ok(new { id = myModel.Id, name = myModel.Name });
 
+        }
     }
 }
