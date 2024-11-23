@@ -309,9 +309,9 @@ namespace SOTISProj.Controllers
             }
         }
         [HttpPost("subject")] 
-        public IActionResult PostMyModel(Subject myModel) 
+        public IActionResult PostMyModel(Field myModel) 
         { 
-            _context.Subjects.Add(myModel); 
+            _context.Fields.Add(myModel); 
             _context.SaveChanges(); 
             return Ok(new { id = myModel.Id, name = myModel.Name });
 

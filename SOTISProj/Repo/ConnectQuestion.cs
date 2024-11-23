@@ -5,8 +5,8 @@ namespace SOTISProj.Repo
     public class ConnectQuestion
     {
         public int Id { get;private set; }
-        public ICollection<String> LeftTerms { get; set; }
-        public ICollection<String> RightTerms { get; set; } = new List<String>();
+        public ICollection<String> BelongTerms { get; set; }
+        public ICollection<String> BellongingTerms { get; set; } = new List<String>();
         public ConnectQuestion() { }
         public bool Validate()
         {

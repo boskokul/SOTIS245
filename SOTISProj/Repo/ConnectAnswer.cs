@@ -7,8 +7,8 @@ namespace SOTISProj.Repo
         public int Id { get; set; }
         public Test Test { get; set; }
         public ConnectQuestion Question { get; set; }
-        public ICollection<Pair> connectedPairs { get; set; }
-        public int correctConnections { get; set; } //maybe out
+        public List<Pair> ConnectedPairs { get; set; }
+        public TestSample TestSample { get; set; }
         public ConnectAnswer() { }
         public bool Validate()
         {

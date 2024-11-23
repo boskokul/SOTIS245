@@ -2,15 +2,15 @@
 {
     public class Pair
     {
-        public string TermLeft { get; set; }
-        public string TermRight { get; set; }
+        public string BelongTerm { get; set; }
+        public string BelongingTerm { get; set; }
         public bool IsCorrect { get; set; }
         public Pair() { }
-        public bool Validate()
+        /*public bool Validate()
         {
             //TODO: implement model validation
             return true;
-        }
+        }*/
 
     }
 }

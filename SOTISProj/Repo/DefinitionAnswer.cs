@@ -9,6 +9,7 @@ namespace SOTISProj.Repo
         public DefinitionQuestion Question { get; set; }
         public string AnsweredDefinition { get; set; }
         public bool IsCorrect { get; set; }
+        public TestSample TestSample { get; set; }
         public DefinitionAnswer() { }
         public bool Validate()
         {
