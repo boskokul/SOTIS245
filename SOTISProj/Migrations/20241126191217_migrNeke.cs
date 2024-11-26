@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SOTISProj.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class migrNeke : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
