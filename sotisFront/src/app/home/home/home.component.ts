@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -8,8 +9,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HomeComponent {
   selectedFile: File | null = null;
+  fileUrl: SafeResourceUrl | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -28,6 +30,10 @@ export class HomeComponent {
         .subscribe(
           (response) => {
             console.log('File uploaded successfully', response);
+
+            const url = `http://localhost:5265/api/python/getPDF/${this.selectedFile?.name}`;
+            this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+            console.log(this.fileUrl);
           },
           (error) => {
             console.error('Error uploading file', error);
