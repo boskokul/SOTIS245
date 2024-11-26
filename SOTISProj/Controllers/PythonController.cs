@@ -340,7 +340,27 @@ namespace SOTISProj.Controllers
 
             return Ok(new { FilePath = filePath });
         }
-    }
 
+        [HttpGet("getPDF/{fileName}")]
+        public async Task<IActionResult> GetFile(string fileName)
+        {
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(filePath, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            Response.Headers.Add("Content-Disposition", "inline; filename=" + fileName);
+            return File(memory, "application/pdf");
+        }
+    }
 }
 
