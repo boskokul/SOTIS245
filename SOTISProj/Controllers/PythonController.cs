@@ -316,5 +316,31 @@ namespace SOTISProj.Controllers
             return Ok(new { id = myModel.Id, name = myModel.Name });
 
         }
+
+        [HttpPost("uploadPDF")]
+        public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+
+            var filePath = Path.Combine(uploadPath, file.FileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return Ok(new { FilePath = filePath });
+        }
     }
+
 }
+

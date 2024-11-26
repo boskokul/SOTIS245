@@ -12,8 +12,8 @@ using SOTISProj.Repo;
 namespace SOTISProj.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241123203255_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241126191217_migrNeke")]
+    partial class migrNeke
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

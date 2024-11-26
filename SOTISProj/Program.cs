@@ -22,6 +22,17 @@ namespace SOTISProj
             builder.Services.AddSingleton<IDataService, InMemoryDataService>();
             builder.Services.AddControllersWithViews();
 
+            // Add the CORS policy
+            builder.Services.AddCors(options => 
+            { 
+                options.AddPolicy("AllowAll", builder => 
+                { 
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader(); 
+                }); 
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -32,6 +43,9 @@ namespace SOTISProj
             }
 
             app.UseHttpsRedirection();
+
+            // Use the CORS policy
+            app.UseCors("AllowAll");
 
             app.UseAuthorization();
 
