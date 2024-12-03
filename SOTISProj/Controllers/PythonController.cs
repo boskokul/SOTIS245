@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SOTISProj.DTO;
 using SOTISProj.Repo;
+using SOTISProj.SeriveInterfaces;
 using SOTISProj.Services;
 using System.Diagnostics;
 using System.Text.Json;
@@ -15,10 +16,12 @@ namespace SOTISProj.Controllers
     {
         private readonly IDataService _dataService;
         private readonly MyDbContext _context;
-        public PythonController(IDataService dataService, MyDbContext context)
+        private readonly ITestService _testService;
+        public PythonController(IDataService dataService, MyDbContext context, ITestService testService)
         {
             _dataService = dataService;
             _context = context;
+            _testService = testService;
         }
         [HttpGet("parsePDF")]
         public IActionResult RunParse()
@@ -475,6 +478,9 @@ namespace SOTISProj.Controllers
                 {
                     return BadRequest($"Error running Python script: {errors}");
                 }
+
+                //call the service 
+                Test test =  _testService.createTest(TestJson, testParameters.FieldName);
 
                 return Ok(TestJson);
             }

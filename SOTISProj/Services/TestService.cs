@@ -11,9 +11,9 @@ namespace SOTISProj.Services
             _db = db;
         }
 
-        public Test createTest(string json_string)
+        public Test createTest(string json_string, string field)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         

@@ -2,6 +2,9 @@ using SOTISProj.Services;
 using Microsoft.EntityFrameworkCore;
 
 using SOTISProj.Repo;
+using Microsoft.Extensions.Configuration;
+using SOTISProj.RepositoryInterfaces;
+using SOTISProj.SeriveInterfaces;
 
 namespace SOTISProj
 {
@@ -18,6 +21,9 @@ namespace SOTISProj
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddSingleton<IDataService, InMemoryDataService>();
+            builder.Services.AddScoped<IFieldRepository, FieldRepository>();
+            builder.Services.AddScoped<ITestRepository, TestRepository>();
+            builder.Services.AddScoped<ITestService, TestService>();
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddCors(options => 
@@ -48,6 +54,7 @@ namespace SOTISProj
 
             app.Run();
         }
+        
     }
 }
 
