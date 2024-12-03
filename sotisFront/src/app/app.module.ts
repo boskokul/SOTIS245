@@ -10,6 +10,7 @@ import { AboutComponent } from './about/about/about.component';
 import { ApiService } from './services/api.service'; // Import your ApiService
 import { AppRoutingModule } from './app-routing.module';
 import { SafePipe } from './safe.pipe';
+import { TreeNodeComponent } from './tree-node/tree-node.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,7 +18,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, AboutComponent, SafePipe],
+  declarations: [AppComponent, HomeComponent, AboutComponent, SafePipe, TreeNodeComponent],
   imports: [
     BrowserModule,
     HttpClientModule, // Add HttpClientModule to imports array

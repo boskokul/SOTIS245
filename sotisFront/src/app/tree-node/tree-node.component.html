@@ -1,0 +1,11 @@
+<li>
+  <div [style.color]="getColor(node.properties.isConcept)">
+    <span>{{ node.properties.term }}</span>
+    <span *ngIf="node.properties.isConcept">(Concept)</span>
+  </div>
+  <ul *ngIf="node.children.length > 0">
+    <ng-container *ngFor="let child of node.children">
+      <app-tree-node [node]="child"></app-tree-node>
+    </ng-container>
+  </ul>
+</li>

@@ -361,6 +361,73 @@ namespace SOTISProj.Controllers
             Response.Headers.Add("Content-Disposition", "inline; filename=" + fileName);
             return File(memory, "application/pdf");
         }
+
+        [HttpGet("getAllPDFs")]
+        public IActionResult GetAllPDFs()
+        {
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+
+            if (!Directory.Exists(uploadPath))
+            {
+                return NotFound("Uploads directory not found.");
+            }
+
+            var pdfFiles = Directory.GetFiles(uploadPath, "*.pdf")
+                                    .Select(Path.GetFileName)
+                                    .ToList();
+
+            return Ok(pdfFiles);
+        }
+
+        [HttpGet("acmSubtree")]
+        public IActionResult GetACMSubtree()
+        {
+            var scriptPath = "..\\SOTISProj\\PythonScripts\\acmSubtree.py";
+            var subTree = "Networks";
+            var start = new ProcessStartInfo
+            {
+                FileName = "C:\\Users\\bosko\\Desktop\\SOTIS\\okruzenje\\Scripts\\python.exe",
+                Arguments = $"{scriptPath} \"{subTree}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            string result;
+            string errors;
+
+            try
+            {
+                using (var process = Process.Start(start))
+                {
+                    using (var reader = process.StandardOutput)
+                    {
+                        result = reader.ReadToEnd();
+                    }
+                    errors = process.StandardError.ReadToEnd(); 
+
+                    if (!string.IsNullOrWhiteSpace(result))
+                    {
+                        Debug.WriteLine($"Standard Output: {result}");
+                    }
+                    if (!string.IsNullOrWhiteSpace(errors))
+                    {
+                        Debug.WriteLine($"Standard Error: {errors}");
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(errors))
+                {
+                    return BadRequest($"Error running Python script: {errors}");
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
     }
 }
 

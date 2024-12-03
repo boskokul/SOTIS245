@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.pdf-section,
+.tree-section {
+  flex: 1;
+  max-width: 48%;
+}
+
+.tree-section {
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.node {
+  margin: 5px 0;
+}
