@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SOTISProj.Migrations
 {
-    public partial class migrNeke : Migration
+    public partial class updatedDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,6 +50,26 @@ namespace SOTISProj.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Students", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "instancePDFs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    FieldId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_instancePDFs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_instancePDFs_Fields_FieldId",
+                        column: x => x.FieldId,
+                        principalTable: "Fields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -248,6 +268,11 @@ namespace SOTISProj.Migrations
                 column: "TestId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_instancePDFs_FieldId",
+                table: "instancePDFs",
+                column: "FieldId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tests_FieldId",
                 table: "Tests",
                 column: "FieldId");
@@ -273,6 +298,9 @@ namespace SOTISProj.Migrations
 
             migrationBuilder.DropTable(
                 name: "DefiniftionAnswers");
+
+            migrationBuilder.DropTable(
+                name: "instancePDFs");
 
             migrationBuilder.DropTable(
                 name: "ConnectQuestions");
