@@ -480,9 +480,9 @@ namespace SOTISProj.Controllers
                 }
 
                 //call the service 
-                Test test =  _testService.createTest(TestJson, testParameters.FieldName);
+                Test test =  _testService.createTest(TestJson, testParameters.FieldName, testParameters.Name);
 
-                return Ok(TestJson);
+                return Ok(test);
             }
             catch (Exception ex)
             {

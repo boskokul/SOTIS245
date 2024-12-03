@@ -5,6 +5,9 @@
         public int Id { get; set; }
         public string Term { get; set; }
         public DefinitionQuestion() { }
+        public DefinitionQuestion(string Term) {
+            this.Term = Term;
+        }
         public bool Validate()
         {
             //TODO: implement model validation

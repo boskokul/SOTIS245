@@ -5,7 +5,7 @@ namespace SOTISProj.Repo
     public class Test
     {
         public int Id { get;private set; }
-        public string Name { get; private set; }
+        public string Name { get;  set; }
         public Field Field { get; set; }
         public ICollection<ConnectQuestion> ConnectQuestions { get; set; }
         public ICollection<DefinitionQuestion> DefinitionQuestions { get; set; }
