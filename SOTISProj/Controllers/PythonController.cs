@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SOTISProj.DTO;
 using SOTISProj.Repo;
 using SOTISProj.Services;
 using System.Diagnostics;
@@ -422,6 +424,57 @@ namespace SOTISProj.Controllers
                 }
 
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("CreateTest")]
+        public IActionResult CreateTest(TestParametersDTO testParameters)
+        {
+            string connectQuestionNums_json = JsonSerializer.Serialize(testParameters.COnQuestionsNum);
+            Console.WriteLine(connectQuestionNums_json);
+            var scriptPath = "..\\SOTISProj\\PythonScripts\\test_wrapper.py";
+            var start = new ProcessStartInfo
+            {
+                
+                FileName = "C:\\Users\\Laptop\\anaconda3\\envs\\SOTIS\\python.exe",
+                Arguments = $"{scriptPath} \"{testParameters.FieldName}\" \"{connectQuestionNums_json}\"  \"{testParameters.DefQuestionsNum}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            string errors;
+            string TestJson;
+            try
+            {
+                using (var process = Process.Start(start))
+                {
+                    using (var reader = process.StandardOutput)
+                    {
+                        TestJson = reader.ReadToEnd();
+                    }
+                    errors = process.StandardError.ReadToEnd();
+
+                    if (!string.IsNullOrWhiteSpace(TestJson))
+                    {
+                        Debug.WriteLine($"Standard Output: {TestJson}");
+                    }
+                    if (!string.IsNullOrWhiteSpace(errors))
+                    {
+                        Debug.WriteLine($"Standard Error: {errors}");
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(errors))
+                {
+                    return BadRequest($"Error running Python script: {errors}");
+                }
+
+                return Ok(TestJson);
             }
             catch (Exception ex)
             {

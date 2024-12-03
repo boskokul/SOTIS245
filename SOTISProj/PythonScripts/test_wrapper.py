@@ -3,8 +3,18 @@ import sys
 from test_connect_terms import get_connect_question
 from test_def_terms import get_def_terms
 
-connect_questions_nums = [(3,5),(4,4),(5,6)] #to become dynamic
-def_questions_num = 5 #to become dynamic
+#retrieving system arguments
+rootTerm_sys = sys.argv[1]
+conn_num_json = sys.argv[2]
+def_num_json = sys.argv[3]
+
+conn_num_json = conn_num_json.replace("{", '{"').replace(":", '":').replace(",", ',"')
+conn_num_json = conn_num_json.replace('"{', '{')
+# print(conn_num_json)
+#defining parameters for functions
+connect_questions_nums = [(item["termNum"], item["parentNum"]) for item in json.loads(conn_num_json)]
+def_questions_num = int(def_num_json)
+root_term = "Networks" #NOT IMPLEMENTED!!!!!!!!!!!!!!!! IN OTHER SCRIPTS root_term is fixed -- to be fixed soon
 
 connect_questions = []
 for i in range(len(connect_questions_nums)):
