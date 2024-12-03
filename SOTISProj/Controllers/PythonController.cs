@@ -319,8 +319,8 @@ namespace SOTISProj.Controllers
 
         }
 
-        [HttpPost("uploadPDF")]
-        public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
+        [HttpPost("uploadPDF/{rootTerm}")]
+        public async Task<IActionResult> UploadFile([FromForm] IFormFile file, string rootTerm)
         {
             if (file == null || file.Length == 0)
             {
@@ -339,6 +339,12 @@ namespace SOTISProj.Controllers
             {
                 await file.CopyToAsync(stream);
             }
+
+            InstancePDF instancePDF = new InstancePDF();
+            instancePDF.Field = _context.Fields.ToList().Find(x => x.RootTerm.Equals(rootTerm));
+            instancePDF.Name = file.FileName;
+            _context.instancePDFs.Add(instancePDF);
+            _context.SaveChanges();
 
             return Ok(new { FilePath = filePath });
         }
@@ -364,28 +370,24 @@ namespace SOTISProj.Controllers
             return File(memory, "application/pdf");
         }
 
-        [HttpGet("getAllPDFs")]
-        public IActionResult GetAllPDFs()
+        [HttpGet("getAllPDFs/{rootTerm}")]
+        public IActionResult GetAllPDFs(string rootTerm)
         {
-            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
-
-            if (!Directory.Exists(uploadPath))
+            var res = new List<string>();
+            var iinstancePDFs = _context.instancePDFs.Include(x => x.Field).ToList().FindAll(x => x.Field.RootTerm.Equals(rootTerm));
+            foreach ( var ik in iinstancePDFs)
             {
-                return NotFound("Uploads directory not found.");
+                res.Add(ik.Name);
             }
 
-            var pdfFiles = Directory.GetFiles(uploadPath, "*.pdf")
-                                    .Select(Path.GetFileName)
-                                    .ToList();
-
-            return Ok(pdfFiles);
+            return Ok(res);
         }
 
-        [HttpGet("acmSubtree")]
-        public IActionResult GetACMSubtree()
+        [HttpGet("acmSubtree/{rootTerm}")]
+        public IActionResult GetACMSubtree(string rootTerm)
         {
             var scriptPath = "..\\SOTISProj\\PythonScripts\\acmSubtree.py";
-            var subTree = "Networks";
+            var subTree = rootTerm;
             var start = new ProcessStartInfo
             {
                 FileName = "C:\\Users\\bosko\\Desktop\\SOTIS\\okruzenje\\Scripts\\python.exe",

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,17 +12,25 @@ export class HomeComponent implements OnInit {
   selectedFile: File | null = null;
   fileUrls: SafeResourceUrl[] = [];
   tree: any = null;
+  currentField: string = '';
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
+  constructor(
+    private http: HttpClient,
+    private sanitizer: DomSanitizer,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.fetchHierarchy('Networks');
+    this.currentField = this.route.snapshot.paramMap.get('id') || '';
+    this.fetchHierarchy(this.currentField);
     this.loadExistingPDFs();
   }
 
   private loadExistingPDFs(): void {
     this.http
-      .get<string[]>('http://localhost:5265/api/python/getAllPDFs')
+      .get<string[]>(
+        'http://localhost:5265/api/python/getAllPDFs/' + this.currentField
+      )
       .subscribe(
         (response) => {
           this.fileUrls = response.map((fileName) =>
@@ -49,7 +58,10 @@ export class HomeComponent implements OnInit {
       formData.append('file', this.selectedFile, this.selectedFile.name);
 
       this.http
-        .post('http://localhost:5265/api/python/uploadPDF', formData)
+        .post(
+          'http://localhost:5265/api/python/uploadPDF/' + this.currentField,
+          formData
+        )
         .subscribe(
           (response) => {
             console.log('File uploaded successfully', response);
@@ -71,18 +83,22 @@ export class HomeComponent implements OnInit {
   }
 
   fetchHierarchy(term: string): void {
-    this.http.get<any>(`http://localhost:5265/api/python/acmSubtree`).subscribe(
-      (response) => {
-        // console.log('Fetched hierarchy:', response);
-        if (response) {
-          this.tree = response;
-        } else {
-          console.error('Invalid or empty hierarchy response:', response);
+    this.http
+      .get<any>(
+        `http://localhost:5265/api/python/acmSubtree/` + this.currentField
+      )
+      .subscribe(
+        (response) => {
+          // console.log('Fetched hierarchy:', response);
+          if (response) {
+            this.tree = response;
+          } else {
+            console.error('Invalid or empty hierarchy response:', response);
+          }
+        },
+        (error) => {
+          console.error('Error fetching hierarchy:', error);
         }
-      },
-      (error) => {
-        console.error('Error fetching hierarchy:', error);
-      }
-    );
+      );
   }
 }

@@ -179,6 +179,28 @@ namespace SOTISProj.Migrations
                     b.ToTable("Fields");
                 });
 
+            modelBuilder.Entity("SOTISProj.Repo.InstancePDF", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("FieldId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FieldId");
+
+                    b.ToTable("instancePDFs");
+                });
+
             modelBuilder.Entity("SOTISProj.Repo.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -314,6 +336,17 @@ namespace SOTISProj.Migrations
                     b.HasOne("SOTISProj.Repo.Test", null)
                         .WithMany("DefinitionQuestions")
                         .HasForeignKey("TestId");
+                });
+
+            modelBuilder.Entity("SOTISProj.Repo.InstancePDF", b =>
+                {
+                    b.HasOne("SOTISProj.Repo.Field", "Field")
+                        .WithMany()
+                        .HasForeignKey("FieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Field");
                 });
 
             modelBuilder.Entity("SOTISProj.Repo.Test", b =>
