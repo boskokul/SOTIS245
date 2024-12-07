@@ -1,0 +1,92 @@
+h1 {
+text-align: center;
+}
+form {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling the form fields */
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 16px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Label styling */
+label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Styling for buttons */
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Styling the FormArray section */
+.form-array {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-array div {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-array div input {
+  width: 45%;
+}
+
+/* Add spacing between the "Add Field" button and the form */
+button[type="button"] {
+  background-color: #28a745;
+  border-radius: 4px;
+  width: auto;
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+button[type="button"]:hover {
+  background-color: #218838;
+}

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 import { RouterModule, Routes } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home/home.component';
@@ -11,6 +12,10 @@ import { ApiService } from './services/api.service'; // Import your ApiService
 import { AppRoutingModule } from './app-routing.module';
 import { SafePipe } from './safe.pipe';
 import { TreeNodeComponent } from './tree-node/tree-node.component';
+import { TestComponent } from './test/test.component';
+import { TestCreationComponent } from './test-creation/test-creation.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,12 +23,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, AboutComponent, SafePipe, TreeNodeComponent],
+  declarations: [AppComponent, HomeComponent, AboutComponent, SafePipe, TreeNodeComponent, TestComponent, TestCreationComponent],
   imports: [
     BrowserModule,
     HttpClientModule, // Add HttpClientModule to imports array
     // RouterModule.forRoot(routes),
     AppRoutingModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
   ],
   providers: [ApiService],
   bootstrap: [AppComponent],

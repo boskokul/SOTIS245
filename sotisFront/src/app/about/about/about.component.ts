@@ -19,5 +19,13 @@ export class AboutComponent {
     this.router.navigate(['/home', 'Hardware']).then(() => {
       console.log('Navigated to Second Page');
     });
+    
+  }
+
+  navigateToTests() {
+    this.router.navigate(['/tests']).then(() => {
+      console.log('Navigated to Tests');
+    });
+    
   }
 }

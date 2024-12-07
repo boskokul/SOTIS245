@@ -1,0 +1,27 @@
+h1 {
+text-align: center;
+}
+
+button {
+    background-color: blue;        /* Button's initial background color */
+    color: white;                 /* Text color */
+    font-size: 1.2rem;            /* Slightly larger font size */
+    padding: 10px 20px;           /* Padding to make the button bigger */
+    border: none;                 /* Remove default border */
+    border-radius: 5px;           /* Slightly rounded corners */
+    cursor: pointer;              /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth hover transitions */
+  }
+  
+  /* Hover effect */
+  button:hover {
+    background-color: darkblue;   /* Darker blue on hover */
+    transform: scale(1.05);       /* Slightly grow the button */
+  }
+  .button-container {
+    display: flex;               /* Use flexbox for alignment */
+    justify-content: center;     /* Center elements horizontally */
+    align-items: center;         /* Center elements vertically */
+    height: 100%;                /* Adjust height as needed */
+    text-align: center;          /* Align text if inline elements are present */
+  }

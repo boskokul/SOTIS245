@@ -436,10 +436,10 @@ namespace SOTISProj.Controllers
             }
         }
 
-        [HttpPost("CreateTest")]
+        [HttpPost("createTest")]
         public IActionResult CreateTest(TestParametersDTO testParameters)
         {
-            string connectQuestionNums_json = JsonSerializer.Serialize(testParameters.COnQuestionsNum);
+            string connectQuestionNums_json = JsonSerializer.Serialize(testParameters.ConQuestionsNum);
             Console.WriteLine(connectQuestionNums_json);
             var scriptPath = "..\\SOTISProj\\PythonScripts\\test_wrapper.py";
             var start = new ProcessStartInfo
