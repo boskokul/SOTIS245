@@ -47,13 +47,10 @@ namespace SOTISProj.Controllers
                     {
                         ParsedText = reader.ReadToEnd();
                     }
-                    errors = process.StandardError.ReadToEnd(); // Capture errors
-
-                    // Log output and errors for debugging
+                    errors = process.StandardError.ReadToEnd();
                     if (!string.IsNullOrWhiteSpace(ParsedText))
                     {
                         Debug.WriteLine($"Standard Output: {ParsedText}");
-                        //Console.WriteLine($"Text: {ParsedText}");
                         _dataService.SavePDFContent(ParsedText);
                     }
                     if (!string.IsNullOrWhiteSpace(errors))
@@ -100,9 +97,7 @@ namespace SOTISProj.Controllers
                     {
                         res = reader.ReadToEnd();
                     }
-                    errors = process.StandardError.ReadToEnd(); // Capture errors
-
-                    // Log output and errors for debugging
+                    errors = process.StandardError.ReadToEnd();
                     if (!string.IsNullOrWhiteSpace(res))
                     {
                         Debug.WriteLine($"Standard Output: {res}");
@@ -172,7 +167,6 @@ namespace SOTISProj.Controllers
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
-            Console.WriteLine("AAAAAAA" +terms + "BBB");
             string errors;
             string TermsJSON;
             try
@@ -487,6 +481,110 @@ namespace SOTISProj.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+        [HttpGet("ExtractAndSave")]
+        public IActionResult ExtractAndSave()
+        {
+            try
+            {
+                // Step 1: Parse PDF
+                string parsedText = RunPythonScript("..\\SOTISProj\\PythonScripts\\parsePDF.py", "..\\SOTISProj\\PDFs\\networks2.pdf");
+                if (parsedText == null) return BadRequest("Error parsing PDF.");
+                _dataService.SavePDFContent(parsedText);
+
+                // Step 2: Extract Terms
+                string termsResult = RunPythonScript("..\\SOTISProj\\PythonScripts\\first.py", $"\"{_dataService.GetPDFContent()}\" \"{_dataService.GetAcmSubTree()}\"");
+                if (termsResult == null) return BadRequest("Error extracting terms.");
+
+                ProcessTermsResult(termsResult);
+
+                // Step 3: Get ACM Part
+                string acmResult = RunPythonScript("..\\SOTISProj\\PythonScripts\\database_test.py", "\"Networks\"");
+                if (acmResult == null) return BadRequest("Error retrieving ACM part.");
+                _dataService.SaveAcmSubTree(acmResult.Split("###")[1]);
+
+                // Step 4: Find New Relations
+                string terms = string.Join(", ", _dataService.GetTermsRelations().Select(t => t.Key));
+                string relationsResult = RunPythonScript("..\\SOTISProj\\PythonScripts\\second.py", $"\"{terms}\" \"{_dataService.GetAcmSubTree()}\" \"{_dataService.GetTermsRelations()}\"");
+                if (relationsResult == null) return BadRequest("Error finding new relations.");
+
+                // Step 5: Add Relations
+                string finalResult = RunPythonScript("..\\SOTISProj\\PythonScripts\\third.py", $"\"{terms}\" \"{_dataService.GetTermsRelationsPairs()}\" \"{_dataService.GetTermsDefinitionsPairs()}\"");
+                if (finalResult == null) return BadRequest("Error adding relations.");
+
+                return Ok(finalResult);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+        private string RunPythonScript(string scriptPath, string arguments)
+        {
+            var start = new ProcessStartInfo
+            {
+                FileName = "C:\\Users\\bosko\\Desktop\\SOTIS\\okruzenje\\Scripts\\python.exe",
+                Arguments = $"{scriptPath} {arguments}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            string errors;
+            string output;
+
+            try
+            {
+                using (var process = Process.Start(start))
+                {
+                    using (var reader = process.StandardOutput)
+                    {
+                        output = reader.ReadToEnd();
+                    }
+                    errors = process.StandardError.ReadToEnd();
+
+                    if (!string.IsNullOrWhiteSpace(errors))
+                    {
+                        Debug.WriteLine($"Standard Error: {errors}");
+                        return null;
+                    }
+                }
+
+                Debug.WriteLine($"Standard Output: {output}");
+                return output;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
+        private void ProcessTermsResult(string termsResult)
+        {
+            string jsonString1 = termsResult.Split("###")[0].Replace('\'', '"');
+            string jsonString2 = termsResult.Split("###")[1].Replace('\'', '"');
+
+            var definitions = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString1);
+            _dataService.SaveTermsDefinitions(definitions);
+
+            foreach (var item in definitions)
+            {
+                Console.WriteLine($"{item.Key}: {item.Value}\n");
+            }
+
+            var relations = JsonSerializer.Deserialize<Dictionary<string, RelatedTerms>>(jsonString2, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            _dataService.SaveTermsRelations(relations);
+
+            foreach (var item in relations)
+            {
+                Console.WriteLine($"{item.Key}:");
+                foreach (var relatedTerm in item.Value.Related_to)
+                {
+                    Console.WriteLine($"  - {relatedTerm}");
+                }
+                Console.WriteLine();
             }
         }
     }

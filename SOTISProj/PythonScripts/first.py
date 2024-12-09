@@ -19,7 +19,7 @@ def functionLLM(text: str):
             "    term: definition,\n"
             "    term2: definition2\n"
             "}```\n"
-            "Additionally, use only those key extracted terms and show all relations between them based on semantic similarity, in this valid JSON format:\n"
+            "Additionally, use only those key extracted terms and show up to two important relations between each of them based on semantic similarity, in this valid JSON format:\n"
             "```json{\n"
             "    ''term1'': {\n"
             "        ''related_to'': [''term2'', ''term3'']\n"
