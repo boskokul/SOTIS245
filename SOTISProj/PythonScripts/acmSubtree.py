@@ -113,33 +113,24 @@ related_to_all = get_related_all(terms)
 # print(related_to_all)
 done = []
 for source, target in related_to_all:
-    # if source in nodes and target["term"] in nodes:
-    #     continue
     source_node = nodes[source]
-    if source in done or source_node["properties"]["isConcept"] == True:
+    if source_node["properties"]["isConcept"] == False:
+        continue
+    target_node = nodes[target["term"]]
+    if(source_node["properties"]["term"] in done):
         continue
     done.append(target["term"])
-    # if source not in nodes:
-    #     nodes[source] = {"properties": {"term": source}, "children": []}
-        # print('AAAAAAAA')
-    
-    # if target["term"] not in nodes:
-    #     new_child = {"properties": target, "children": []}
-    #     nodes[target["term"]] = new_child
-    #     source_node["children"].append(new_child)
-        # print('BBBBBB')
-    # else:
-    target_node = nodes[target["term"]]
-    # if "related_to" not in source_node:
-    #     source_node["related_to"] = []
-    # source_node["related_to"].append(target_node)
-    # Adding related-to terms as children
-    if "children" not in source_node:
-        source_node["children"] = []
-    source_node["children"].append(target_node)
-    #EHEJ
-    # print(source_node["properties"], target_node["properties"])
-    # break
+    for sourceNew, targetNew in related_to_all:
+        target_node_new = nodes[targetNew["term"]].copy()
+        if sourceNew == target["term"]:  
+            # print(target_node["properties"]["term"], target_node_new["properties"]["term"])
+            source_node_new = nodes[sourceNew]
+            new_child = {"properties": targetNew, "children": []}
+            # continue
+            if "children" not in target_node:
+                target_node["children"] = []
+            target_node["children"].append(new_child)
+
 
 # Convert to JSON and print
 json_output = json.dumps(hierarchy_tree, indent=2)
