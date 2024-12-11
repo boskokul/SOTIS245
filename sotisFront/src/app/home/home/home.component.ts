@@ -22,8 +22,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentField = this.route.snapshot.paramMap.get('id') || '';
-    this.fetchHierarchy(this.currentField);
-    this.loadExistingPDFs();
+    this.fetchHierarchy();
+    // this.loadExistingPDFs();
   }
 
   private loadExistingPDFs(): void {
@@ -69,8 +69,26 @@ export class HomeComponent implements OnInit {
             const url = `http://localhost:5265/api/python/getPDF/${this.selectedFile?.name}`;
             const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
+            this.fileUrls = [];
             this.fileUrls.unshift(safeUrl);
 
+            if (this.selectedFile)
+              this.http
+                .get<string>(
+                  'http://localhost:5265/api/python/ExtractAndSave/' +
+                    this.selectedFile.name
+                )
+                .subscribe(
+                  (response) => {
+                    this.fetchHierarchy();
+                  },
+                  (err) => {
+                    console.error(
+                      'Error extracting terms and relations from file',
+                      err
+                    );
+                  }
+                );
             this.selectedFile = null;
           },
           (error) => {
@@ -82,7 +100,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  fetchHierarchy(term: string): void {
+  fetchHierarchy(): void {
     this.http
       .get<any>(
         `http://localhost:5265/api/python/acmSubtree/` + this.currentField
@@ -100,5 +118,15 @@ export class HomeComponent implements OnInit {
           console.error('Error fetching hierarchy:', error);
         }
       );
+  }
+
+  handleTermClick(term: string) {
+    console.log('Term clicked:', term);
+
+    const url = `http://localhost:5265/api/python/getPDFByTerm/${term}`;
+    const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+    this.fileUrls = [];
+    this.fileUrls.unshift(safeUrl);
   }
 }

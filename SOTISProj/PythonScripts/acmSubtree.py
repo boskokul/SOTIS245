@@ -2,6 +2,7 @@ import json
 from neo4j import GraphDatabase
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import re
+import sys
 
 # Connect to the Neo4j database
 uri = "bolt://localhost:7687"
@@ -80,7 +81,7 @@ def get_all_paths(term):
     return paths
 
 # Retrieve paths and convert them to a tree structure
-paths = get_all_paths("Networks")
+paths = get_all_paths(sys.argv[1])
 
 hierarchy_tree, nodes = build_tree(paths)
 
@@ -113,6 +114,8 @@ related_to_all = get_related_all(terms)
 # print(related_to_all)
 done = []
 for source, target in related_to_all:
+    if(source not in nodes.keys()):
+        continue
     source_node = nodes[source]
     if source_node["properties"]["isConcept"] == False:
         continue
@@ -121,7 +124,7 @@ for source, target in related_to_all:
         continue
     done.append(target["term"])
     for sourceNew, targetNew in related_to_all:
-        target_node_new = nodes[targetNew["term"]].copy()
+        # target_node_new = nodes[targetNew["term"]]
         if sourceNew == target["term"]:  
             # print(target_node["properties"]["term"], target_node_new["properties"]["term"])
             source_node_new = nodes[sourceNew]

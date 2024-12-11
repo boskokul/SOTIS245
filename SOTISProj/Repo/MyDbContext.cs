@@ -37,6 +37,7 @@ namespace SOTISProj.Repo
 
         public DbSet<Field> Fields { get; set; }
         public DbSet<InstancePDF> instancePDFs { get; set; }
+        public DbSet<TermPdf> termPdfs { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Admin> Admins{ get; set; }
         public DbSet<Test> Tests { get; set; }

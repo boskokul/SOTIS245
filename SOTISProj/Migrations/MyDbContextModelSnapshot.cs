@@ -222,6 +222,27 @@ namespace SOTISProj.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("SOTISProj.Repo.TermPdf", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Pdf")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Term")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("termPdfs");
+                });
+
             modelBuilder.Entity("SOTISProj.Repo.Test", b =>
                 {
                     b.Property<int>("Id")

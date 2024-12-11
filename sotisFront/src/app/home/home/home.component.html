@@ -13,19 +13,21 @@
     </div>
   </div>
 
-  <!-- Subtree Hierarchy Section -->
   <div class="tree-section">
     <h2>Subtree Hierarchy:</h2>
     <div *ngIf="tree">
       <ul>
         <li>
-          <div class="node">
+          <div class="node" (click)="handleTermClick(tree.properties.term)">
             <span>{{ tree.properties.term }}</span>
             <span *ngIf="tree.properties.isConcept">(Concept)</span>
           </div>
           <ul *ngIf="tree.children.length > 0">
             <ng-container *ngFor="let child of tree.children">
-              <app-tree-node [node]="child"></app-tree-node>
+              <app-tree-node
+                [node]="child"
+                (termClick)="handleTermClick($event)"
+              ></app-tree-node>
             </ng-container>
           </ul>
         </li>

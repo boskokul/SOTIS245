@@ -12,8 +12,8 @@ using SOTISProj.Repo;
 namespace SOTISProj.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241203185656_updatedDB")]
-    partial class updatedDB
+    [Migration("20241211103031_initialm")]
+    partial class initialm
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -222,6 +222,27 @@ namespace SOTISProj.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("SOTISProj.Repo.TermPdf", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Pdf")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Term")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("termPdfs");
                 });
 
             modelBuilder.Entity("SOTISProj.Repo.Test", b =>

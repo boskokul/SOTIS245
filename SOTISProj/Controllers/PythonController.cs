@@ -5,6 +5,7 @@ using SOTISProj.DTO;
 using SOTISProj.Repo;
 using SOTISProj.SeriveInterfaces;
 using SOTISProj.Services;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.Json;
 
@@ -367,6 +368,28 @@ namespace SOTISProj.Controllers
             return File(memory, "application/pdf");
         }
 
+        [HttpGet("getPDFByTerm/{term}")]
+        public async Task<IActionResult> GetFileByTerm(string term)
+        {
+            var fileName = _context.termPdfs.First(x => x.Term.Equals(term)).Pdf;
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(filePath, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            Response.Headers.Add("Content-Disposition", "inline; filename=" + fileName);
+            return File(memory, "application/pdf");
+        }
+
         [HttpGet("getAllPDFs/{rootTerm}")]
         public IActionResult GetAllPDFs(string rootTerm)
         {
@@ -483,37 +506,48 @@ namespace SOTISProj.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
-        [HttpGet("ExtractAndSave")]
-        public IActionResult ExtractAndSave()
+        [HttpGet("ExtractAndSave/{fileName}")]
+        public IActionResult ExtractAndSave(string fileName)
         {
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
             try
             {
                 // Step 1: Parse PDF
-                string parsedText = RunPythonScript("..\\SOTISProj\\PythonScripts\\parsePDF.py", "..\\SOTISProj\\PDFs\\networks2.pdf");
+                string parsedText = RunPythonScript("..\\SOTISProj\\PythonScripts\\parsePDF.py", filePath);
                 if (parsedText == null) return BadRequest("Error parsing PDF.");
                 _dataService.SavePDFContent(parsedText);
 
                 // Step 2: Extract Terms
                 string termsResult = RunPythonScript("..\\SOTISProj\\PythonScripts\\first.py", $"\"{_dataService.GetPDFContent()}\" \"{_dataService.GetAcmSubTree()}\"");
-                if (termsResult == null) return BadRequest("Error extracting terms.");
+                if (termsResult == null) 
+                    return BadRequest("Error extracting terms.");
 
-                ProcessTermsResult(termsResult);
+                ProcessTermsResult(termsResult, fileName);
 
                 // Step 3: Get ACM Part
                 string acmResult = RunPythonScript("..\\SOTISProj\\PythonScripts\\database_test.py", "\"Networks\"");
-                if (acmResult == null) return BadRequest("Error retrieving ACM part.");
+                if (acmResult == null) 
+                    return BadRequest("Error retrieving ACM part.");
                 _dataService.SaveAcmSubTree(acmResult.Split("###")[1]);
 
                 // Step 4: Find New Relations
                 string terms = string.Join(", ", _dataService.GetTermsRelations().Select(t => t.Key));
                 string relationsResult = RunPythonScript("..\\SOTISProj\\PythonScripts\\second.py", $"\"{terms}\" \"{_dataService.GetAcmSubTree()}\" \"{_dataService.GetTermsRelations()}\"");
-                if (relationsResult == null) return BadRequest("Error finding new relations.");
+                if (relationsResult == null) 
+                    return BadRequest("Error finding new relations.");
 
                 // Step 5: Add Relations
                 string finalResult = RunPythonScript("..\\SOTISProj\\PythonScripts\\third.py", $"\"{terms}\" \"{_dataService.GetTermsRelationsPairs()}\" \"{_dataService.GetTermsDefinitionsPairs()}\"");
-                if (finalResult == null) return BadRequest("Error adding relations.");
+                if (finalResult == null) 
+                    return BadRequest("Error adding relations.");
 
-                return Ok(finalResult);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -561,23 +595,49 @@ namespace SOTISProj.Controllers
                 return null;
             }
         }
-        private void ProcessTermsResult(string termsResult)
+        private void ProcessTermsResult(string termsResult, string fileName)
         {
             string jsonString1 = termsResult.Split("###")[0].Replace('\'', '"');
             string jsonString2 = termsResult.Split("###")[1].Replace('\'', '"');
 
             var definitions = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString1);
-            _dataService.SaveTermsDefinitions(definitions);
 
-            foreach (var item in definitions)
-            {
-                Console.WriteLine($"{item.Key}: {item.Value}\n");
-            }
+            var unwantedStrings = _context.termPdfs.Select(obj => obj.Term).ToList();
+
+            var filteredDefinitions = definitions
+                .Where(kvp => !unwantedStrings.Contains(kvp.Key))
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+            
 
             var relations = JsonSerializer.Deserialize<Dictionary<string, RelatedTerms>>(jsonString2, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            _dataService.SaveTermsRelations(relations);
 
-            foreach (var item in relations)
+            var filteredRelations = relations
+                .Where(kvp => !unwantedStrings.Contains(kvp.Key)) // Exclude entire key-value pairs where the key is unwanted
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => {
+                        kvp.Value.Related_to = kvp.Value.Related_to.Where(value => !unwantedStrings.Contains(value)).ToList();
+                        return kvp.Value;
+                    }
+                );
+
+
+            _dataService.SaveTermsDefinitions(filteredDefinitions);
+
+            foreach (var item in filteredDefinitions)
+            {
+                Console.WriteLine($"{item.Key}: {item.Value}\n");
+                TermPdf termPdf = new TermPdf();
+                termPdf.Pdf = fileName;
+                termPdf.Term = item.Key;
+                _context.termPdfs.Add(termPdf);
+                _context.SaveChanges();
+            }
+
+            _dataService.SaveTermsRelations(filteredRelations);
+
+            foreach (var item in filteredRelations)
             {
                 Console.WriteLine($"{item.Key}:");
                 foreach (var relatedTerm in item.Value.Related_to)

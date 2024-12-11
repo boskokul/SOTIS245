@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-tree-node',
@@ -7,8 +7,13 @@ import { Component, Input } from '@angular/core';
 })
 export class TreeNodeComponent {
   @Input() node: any;
+  @Output() termClick = new EventEmitter<string>();
 
   getColor(isConcept?: boolean): string {
     return isConcept ? 'green' : 'blue';
+  }
+
+  onTermClick(term: string) {
+    this.termClick.emit(term);
   }
 }
