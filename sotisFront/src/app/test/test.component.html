@@ -3,7 +3,26 @@
     <div class="button-container">
         <button (click)="showModalDialog()">Create</button>
     </div>
-    <div class="test-container">
-        
+    <div class="tab-container">
+        <button
+          *ngFor="let tab of tabs; let i = index"
+          class="tab-button"
+          
+          (click)="selectTab(i)">
+          {{ tab }}
+        </button>
     </div>
+
+      <div class="card-container">
+        <div class="cards">
+          <div class="card" *ngFor="let test of tests" (click)="showTestDetails(test)">
+            <h3>{{ test.name }}</h3>
+            <p>{{ test.field.name }}</p>
+            <p> Connect Questions: <b>{{ test.connectQuestions.length }}</b></p>
+            <p> Definition Questions: <b>{{ test.definitionQuestions.length }}</b></p>
+            
+          </div>
+        </div>
+    </div>
+    
 </div>

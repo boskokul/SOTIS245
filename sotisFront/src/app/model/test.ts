@@ -4,8 +4,8 @@ import { Field } from "./field";
 
 export interface Test{
     id: number,
-    Name: string,
+    name: string,
     field: Field,
-    connectQUestions: ConnectQuestion[],
+    connectQuestions: ConnectQuestion[],
     definitionQuestions: DefQuestion[],
 }

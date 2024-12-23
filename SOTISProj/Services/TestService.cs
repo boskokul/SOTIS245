@@ -63,7 +63,12 @@ namespace SOTISProj.Services
             }
             return definitionQuestions;
         }
+        public List<Test> getAllByField(string field)
+        {
+            return _repository.getAllByFIeld(field);
 
-        
+        }
+
+
     }
 }

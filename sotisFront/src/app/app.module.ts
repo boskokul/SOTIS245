@@ -16,6 +16,7 @@ import { TestComponent } from './test/test.component';
 import { TestCreationComponent } from './test-creation/test-creation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TestDetailComponent } from './test-detail/test-detail.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,7 +24,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, AboutComponent, SafePipe, TreeNodeComponent, TestComponent, TestCreationComponent],
+  declarations: [AppComponent, HomeComponent, AboutComponent, SafePipe, TreeNodeComponent, TestComponent, TestCreationComponent, TestDetailComponent],
   imports: [
     BrowserModule,
     HttpClientModule, // Add HttpClientModule to imports array

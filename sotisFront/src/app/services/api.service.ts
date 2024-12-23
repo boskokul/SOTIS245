@@ -19,6 +19,9 @@ export class ApiService {
   createTest(testDto: TestForm): Observable<any> {
     return this.http.post(`${this.apiUrl}/python/createTest`,testDto);
   }
+  getTestsByField(field: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/tests/`+field);
+  }
 
   // Add other methods as needed
 }

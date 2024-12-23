@@ -4,5 +4,6 @@ namespace SOTISProj.SeriveInterfaces
     public interface ITestService
     {
         public Test createTest(string json_string, string field, string name);
+        public List<Test> getAllByField(string field);
     }
 }

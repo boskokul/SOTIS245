@@ -25,3 +25,83 @@ button {
     height: 100%;                /* Adjust height as needed */
     text-align: center;          /* Align text if inline elements are present */
   }
+  /* Tab Buttons Container */
+.tab-container {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #007bff;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.tab-button:hover {
+  background-color: #e6f7ff;
+}
+
+.tab-button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #0056b3;
+}
+
+/* Card Container */
+/* .card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+} */
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.card {
+  flex: 1 1 200px; /* Minimum width for the cards, allowing them to wrap dynamically */
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px; /* Increased padding for better spacing */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Stronger shadow for better visibility */
+  min-height: 150px; /* Ensures the cards are taller */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+/* Card Container */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* Controls spacing between cards */
+  justify-content: space-evenly; /* Ensures even distribution of cards in a row */
+}
+
+/* Hover effect for cards */
+.card:hover {
+  transform: scale(1.05); /* Slightly enlarge the card on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.card h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.card p {
+  margin: 10px 0 0;
+  color: #555;
+  font-size: 0.9rem;
+}
