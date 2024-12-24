@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.Connections;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SOTISProj.DTO;
@@ -454,6 +455,7 @@ namespace SOTISProj.Controllers
         }
 
         [HttpPost("createTest")]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateTest(TestParametersDTO testParameters)
         {
             string connectQuestionNums_json = JsonSerializer.Serialize(testParameters.ConQuestionsNum);

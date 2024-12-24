@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { TestForm } from '../model/testForm';
 import { Test } from '../model/test';
+import { Login } from '../model/login';
+import { User } from '../model/user';
+import { Router } from '@angular/router';
+import { TokenStorage } from '../auth/jwt/token.service';
+import { AuthenticationResponse } from '../model/authentication-response';
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +16,15 @@ import { Test } from '../model/test';
 export class ApiService {
   private apiUrl = 'http://localhost:5265/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+    private tokenStorage: TokenStorage,
+    private router: Router,) {}
+  user$ = new BehaviorSubject<User>({
+    username: "",
+    id: 0,
+    role: "",
+    
+});
 
   getData(): Observable<any> {
     return this.http.get(`${this.apiUrl}/python/acmPart`);
@@ -23,5 +37,51 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/tests/`+field);
   }
 
+  login(credentials:Login): Observable<any>{
+    return this.http
+            .post<AuthenticationResponse>(
+                this.apiUrl + "/users/login",
+                credentials,
+            )
+            .pipe(
+                tap(authenticationResponse => {
+                    this.tokenStorage.saveAccessToken(
+                        authenticationResponse.accessToken,
+                    );
+                    this.setUser();
+                }),
+            );
+  }
+
+  logout(): void {
+    this.tokenStorage.clear();
+    this.router.navigate([""]);
+    this.user$.next({ username: "", id: 0, role: ""});
+    
+}
+
+checkIfUserExists(): void {
+    const accessToken = this.tokenStorage.getAccessToken();
+    if (accessToken == null) {
+        return;
+    }
+    this.setUser();
+    
+}
+
+private setUser(): void {
+    const jwtHelperService = new JwtHelperService();
+    const accessToken = this.tokenStorage.getAccessToken() || "";
+    const user: User = {
+        id: +jwtHelperService.decodeToken(accessToken).id,
+        username: jwtHelperService.decodeToken(accessToken).username,
+        role: jwtHelperService.decodeToken(accessToken)[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ],
+    };
+    console.log(user)
+    this.user$.next(user);
+    
+}
   // Add other methods as needed
 }

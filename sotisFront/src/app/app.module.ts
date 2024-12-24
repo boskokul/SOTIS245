@@ -17,6 +17,8 @@ import { TestCreationComponent } from './test-creation/test-creation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TestDetailComponent } from './test-detail/test-detail.component';
+import { LoginComponent } from './auth/login/login.component';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,7 +26,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, AboutComponent, SafePipe, TreeNodeComponent, TestComponent, TestCreationComponent, TestDetailComponent],
+  declarations: [AppComponent, HomeComponent, AboutComponent, SafePipe, TreeNodeComponent, TestComponent, TestCreationComponent, TestDetailComponent, LoginComponent],
   imports: [
     BrowserModule,
     HttpClientModule, // Add HttpClientModule to imports array
@@ -34,7 +36,7 @@ const routes: Routes = [
     BrowserAnimationsModule,
     MatDialogModule,
   ],
-  providers: [ApiService],
+  providers: [ApiService, JwtHelperService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

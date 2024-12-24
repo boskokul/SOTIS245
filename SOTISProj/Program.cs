@@ -5,11 +5,16 @@ using SOTISProj.Repo;
 using Microsoft.Extensions.Configuration;
 using SOTISProj.RepositoryInterfaces;
 using SOTISProj.SeriveInterfaces;
+using SOTISProj.Util;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace SOTISProj
 {
     public class Program
     {
+        
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +29,9 @@ namespace SOTISProj
             builder.Services.AddScoped<IFieldRepository, FieldRepository>();
             builder.Services.AddScoped<ITestRepository, TestRepository>();
             builder.Services.AddScoped<ITestService, TestService>();
+            builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
+            builder.Services.AddScoped<IAuthenticationServicee, AuthenticationService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddCors(options => 
@@ -36,6 +44,25 @@ namespace SOTISProj
                 }); 
             });
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                         ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "explorer",
+                        ValidAudience = "explorer-front.com",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecureKeyWithAtLeast32Characters"))
+                    };
+             });
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("StudentPolicy", policy => policy.RequireRole("Student"));
+            });
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())

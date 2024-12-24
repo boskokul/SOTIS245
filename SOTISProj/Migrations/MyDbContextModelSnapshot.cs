@@ -38,7 +38,12 @@ namespace SOTISProj.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("userId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("userId");
 
                     b.ToTable("Admins");
                 });
@@ -217,7 +222,12 @@ namespace SOTISProj.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Students");
                 });
@@ -289,6 +299,41 @@ namespace SOTISProj.Migrations
                     b.HasIndex("TestId");
 
                     b.ToTable("TestSamples");
+                });
+
+            modelBuilder.Entity("SOTISProj.Repo.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SOTISProj.Repo.Admin", b =>
+                {
+                    b.HasOne("SOTISProj.Repo.User", "user")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("SOTISProj.Repo.ConnectAnswer", b =>
@@ -368,6 +413,17 @@ namespace SOTISProj.Migrations
                         .IsRequired();
 
                     b.Navigation("Field");
+                });
+
+            modelBuilder.Entity("SOTISProj.Repo.Student", b =>
+                {
+                    b.HasOne("SOTISProj.Repo.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SOTISProj.Repo.Test", b =>
