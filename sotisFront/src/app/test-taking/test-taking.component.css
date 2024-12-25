@@ -1,0 +1,172 @@
+h1 {
+  text-align: center;
+}
+
+button {
+  background-color: blue; /* Button's initial background color */
+  color: white; /* Text color */
+  font-size: 1.2rem; /* Slightly larger font size */
+  padding: 10px 20px; /* Padding to make the button bigger */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Slightly rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth hover transitions */
+}
+
+/* Hover effect */
+button:hover {
+  background-color: darkblue; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly grow the button */
+}
+.button-container {
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center elements horizontally */
+  align-items: center; /* Center elements vertically */
+  height: 100%; /* Adjust height as needed */
+  text-align: center; /* Align text if inline elements are present */
+}
+/* Tab Buttons Container */
+.tab-container {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #007bff;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.tab-button:hover {
+  background-color: #e6f7ff;
+}
+
+.tab-button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #0056b3;
+}
+
+/* Card Container */
+/* .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    } */
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.card {
+  flex: 1 1 200px; /* Minimum width for the cards, allowing them to wrap dynamically */
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px; /* Increased padding for better spacing */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Stronger shadow for better visibility */
+  min-height: 150px; /* Ensures the cards are taller */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+/* Card Container */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* Controls spacing between cards */
+  justify-content: space-evenly; /* Ensures even distribution of cards in a row */
+}
+
+/* Hover effect for cards */
+.card:hover {
+  transform: scale(1.05); /* Slightly enlarge the card on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.card h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.card p {
+  margin: 10px 0 0;
+  color: #555;
+  font-size: 0.9rem;
+}
+.test-sample-list {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.test-sample-list h1 {
+  font-size: 1.5rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.test-sample {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.test-sample h2 {
+  font-size: 1.2rem;
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+.test-sample p {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.test-sample h3 {
+  font-size: 1rem;
+  color: #333;
+  margin-top: 10px;
+}
+
+.test-sample ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.test-sample li {
+  background-color: #e9ecef;
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  border-left: 3px solid #1f1818;
+}
+
+.correct {
+  color: green;
+}
+
+.incorrect {
+  color: red;
+}

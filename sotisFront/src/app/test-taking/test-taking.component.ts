@@ -1,37 +1,25 @@
 import { Component } from '@angular/core';
+import { Test, TestSample } from '../model/test';
 import { MatDialog } from '@angular/material/dialog';
-import { TestCreationComponent } from '../test-creation/test-creation.component';
 import { ApiService } from '../services/api.service';
-import { Test } from '../model/test';
 import { TestDetailComponent } from '../test-detail/test-detail.component';
+import { TestExecutionComponent } from '../test-execution/test-execution.component';
 
 @Component({
-  selector: 'app-test',
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.css'],
+  selector: 'app-test-taking',
+  templateUrl: './test-taking.component.html',
+  styleUrls: ['./test-taking.component.css'],
 })
-export class TestComponent {
-  heading = 'Test management';
+export class TestTakingComponent {
   constructor(private dialog: MatDialog, private service: ApiService) {}
   tests: Test[] = [];
-  showModalDialog() {
-    const dialogRef = this.dialog.open(TestCreationComponent, {
-      width: '700px',
-      maxHeight: '80vh',
-      data: { message: 'Hello from the parent component!' },
-    });
-
-    //TODO Fetch all tests!!
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-      this.getTests(0);
-    });
-  }
+  testSamples: TestSample[] = [];
 
   tabs: string[] = ['Networks', 'General', 'Reference', 'Hardware'];
 
   selectTab(index: number): void {
     this.getTests(index);
+    this.getTestsSamples(index);
   }
 
   getTests(index: number): void {
@@ -40,14 +28,22 @@ export class TestComponent {
     });
   }
 
+  getTestsSamples(index: number): void {
+    this.service
+      .getTestsByFieldTestSamples(this.tabs[index])
+      .subscribe((data: TestSample[]) => {
+        this.testSamples = data;
+        console.log('Test samples fetched successfully', data);
+      });
+  }
+
   showTestDetails(test: Test) {
-    const dialogRef = this.dialog.open(TestDetailComponent, {
+    const dialogRef = this.dialog.open(TestExecutionComponent, {
       width: '700px',
       maxHeight: '80vh',
       data: { passedTest: test }, // Pass data if needed
     });
 
-    //TODO Fetch all tests!!
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
       // this.getTests(0)

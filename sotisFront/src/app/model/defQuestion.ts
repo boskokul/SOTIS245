@@ -1,4 +1,4 @@
-export interface DefQuestion{
-    id: number,
-    term: string,
+export interface DefQuestion {
+  id: number;
+  term: string;
 }

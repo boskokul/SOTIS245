@@ -8,11 +8,5 @@
         public DefinitionQuestion(string Term) {
             this.Term = Term;
         }
-        public bool Validate()
-        {
-            //TODO: implement model validation
-            return true;
-        }
-
     }
 }

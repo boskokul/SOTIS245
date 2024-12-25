@@ -13,10 +13,5 @@ namespace SOTISProj.Repo
 
         }
         public ConnectQuestion() { }
-        public bool Validate()
-        {
-            //TODO: implement model validation
-            return true;
-        }
     }
 }

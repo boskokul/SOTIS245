@@ -1,0 +1,74 @@
+<div>
+  <div class="tab-container">
+    <button
+      *ngFor="let tab of tabs; let i = index"
+      class="tab-button"
+      (click)="selectTab(i)"
+    >
+      {{ tab }}
+    </button>
+  </div>
+
+  <div class="card-container">
+    <div class="cards">
+      <div
+        class="card"
+        *ngFor="let test of tests"
+        (click)="showTestDetails(test)"
+      >
+        <h3>{{ test.name }}</h3>
+        <p>{{ test.field.name }}</p>
+        <p>
+          Connect Questions: <b>{{ test.connectQuestions.length }}</b>
+        </p>
+        <p>
+          Definition Questions: <b>{{ test.definitionQuestions.length }}</b>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="test-sample-list">
+    <h1>Test Samples</h1>
+    <div *ngFor="let sample of testSamples" class="test-sample">
+      <h2>Test Sample ID: {{ sample.id }}</h2>
+      <p><strong>Taken On:</strong> {{ sample.takenOn | date }}</p>
+      <p>
+        <strong>Student:</strong> {{ sample.student.name }}
+        {{ sample.student.surname }}
+      </p>
+      <p><strong>Test Name:</strong> {{ sample.test.name }}</p>
+
+      <h3>Definition Answers</h3>
+      <ul>
+        <li
+          *ngFor="let answer of sample.definitionAnswers"
+          [ngClass]="{
+            correct: answer.isCorrect,
+            incorrect: !answer.isCorrect
+          }"
+        >
+          <strong>{{ answer.question.term }}:</strong>
+          {{ answer.answeredDefinition }} ({{
+            answer.isCorrect ? "Correct" : "Incorrect"
+          }})
+        </li>
+      </ul>
+
+      <h3>Connect Answers</h3>
+      <div *ngFor="let answer of sample.connectAnswers">
+        <h4>Question ID: {{ answer.question.id }}</h4>
+        <ul>
+          <li
+            *ngFor="let pair of answer.connectedPairs"
+            [ngClass]="{ correct: pair.isCorrect, incorrect: !pair.isCorrect }"
+          >
+            <strong>{{ pair.belongTerm }}</strong> -
+            <strong>{{ pair.belongingTerm }}</strong> ({{
+              pair.isCorrect ? "Correct" : "Incorrect"
+            }})
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,8 +12,8 @@ using SOTISProj.Repo;
 namespace SOTISProj.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241224004714_InitMigration")]
-    partial class InitMigration
+    [Migration("20241224170358_initmig")]
+    partial class initmig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

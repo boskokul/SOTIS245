@@ -2,6 +2,8 @@
 using SOTISProj.Repo;
 using Newtonsoft.Json.Linq;
 using SOTISProj.RepositoryInterfaces;
+using SOTISProj.DTO;
+using System.Diagnostics;
 
 namespace SOTISProj.Services
 {
@@ -29,8 +31,14 @@ namespace SOTISProj.Services
 
             Test savedTest =_repository.save(newTest);
             return savedTest;
-
         }
+
+        public TestSample CreateTestSample(TestSampleDTO testSampleDTO)
+        {                
+            TestSample savedTest = _repository.Save(testSampleDTO);
+            return savedTest;
+        }
+
 
         private List<ConnectQuestion> getConnectQuestions(JObject loadedData)
         {
@@ -66,9 +74,11 @@ namespace SOTISProj.Services
         public List<Test> getAllByField(string field)
         {
             return _repository.getAllByFIeld(field);
-
         }
 
-
+        public List<TestSample> getAllByFieldTestSamples(string field)
+        {
+            return _repository.getAllByFIeldTestSamples(field);
+        }
     }
 }

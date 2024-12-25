@@ -6,11 +6,6 @@
         public string BelongingTerm { get; set; }
         public bool IsCorrect { get; set; }
         public Pair() { }
-        /*public bool Validate()
-        {
-            //TODO: implement model validation
-            return true;
-        }*/
 
     }
 }

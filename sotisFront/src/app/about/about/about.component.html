@@ -1,7 +1,5 @@
 <p>Welcome!</p>
-<button (click)="login()">
-  Login
-</button>
+<button (click)="login()">Login</button>
 <button (click)="navigateToNetworksPage()">Go to Networks Page</button
 ><br /><br />
 <button (click)="navigateToHardwarePage()">Go to Hardware Page</button
@@ -19,8 +17,11 @@
   Go to Mathematics in computing Page</button
 ><br /><br />
 <button (click)="navigateToNetworksPage()">
-  Go to Security and privacy Page
-</button><br /><br />
-<button (click)="navigateToTests()">
-  Tests
+  Go to Security and privacy Page</button
+><br /><br />
+<button (click)="navigateToTestsCreation()" *ngIf="user.role === 'admin'">
+  Create tests
+</button>
+<button (click)="navigateToTestsTaking()" *ngIf="user.role === 'student'">
+  Take tests
 </button>

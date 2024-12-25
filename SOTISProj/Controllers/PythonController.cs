@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Connections;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SOTISProj.DTO;
 using SOTISProj.Repo;
 using SOTISProj.SeriveInterfaces;
 using SOTISProj.Services;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.Json;
 
@@ -283,9 +280,7 @@ namespace SOTISProj.Controllers
                     {
                         result = reader.ReadToEnd();
                     }
-                    errors = process.StandardError.ReadToEnd(); // Capture errors
-
-                    // Log output and errors for debugging
+                    errors = process.StandardError.ReadToEnd(); 
                     if (!string.IsNullOrWhiteSpace(result))
                     {
                         Debug.WriteLine($"Standard Output: {result}");
@@ -455,7 +450,7 @@ namespace SOTISProj.Controllers
         }
 
         [HttpPost("createTest")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult CreateTest(TestParametersDTO testParameters)
         {
             string connectQuestionNums_json = JsonSerializer.Serialize(testParameters.ConQuestionsNum);
@@ -464,7 +459,7 @@ namespace SOTISProj.Controllers
             var start = new ProcessStartInfo
             {
                 
-                FileName = "C:\\Users\\Laptop\\anaconda3\\envs\\SOTIS\\python.exe",
+                FileName = "C:\\Users\\bosko\\Desktop\\SOTIS\\okruzenje\\Scripts\\python.exe",
                 Arguments = $"{scriptPath} \"{testParameters.FieldName}\" \"{connectQuestionNums_json}\"  \"{testParameters.DefQuestionsNum}\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,

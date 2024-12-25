@@ -1,0 +1,71 @@
+<div class="test-details">
+  <h1>{{ test.name }}</h1>
+  <p><strong>Field:</strong> {{ test.field.name }}</p>
+
+  <section>
+    <h2>Connect Questions</h2>
+    <div
+      class="questions connect-questions"
+      *ngFor="let question of test.connectQuestions"
+    >
+      <div class="question">
+        <h3>Question {{ question.id }}</h3>
+        <div cdkDropListGroup class="terms">
+          <div class="terms-column">
+            <h4>Terms:</h4>
+            <ul
+              cdkDropList
+              [cdkDropListData]="question.belongTerms"
+              (cdkDropListDropped)="drop($event, question)"
+            >
+              <li
+                *ngFor="let term of question.belongTerms"
+                cdkDrag
+                [style.background-color]="getConnectionColor(term, question.id)"
+              >
+                {{ term }}
+              </li>
+            </ul>
+          </div>
+          <div class="terms-column">
+            <h4>Belonging Terms:</h4>
+            <ul
+              cdkDropList
+              [cdkDropListData]="question.bellongingTerms"
+              (cdkDropListDropped)="drop($event, question)"
+            >
+              <li
+                *ngFor="let term of question.bellongingTerms"
+                cdkDrag
+                [style.background-color]="getConnectionColor(term, question.id)"
+              >
+                {{ term }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Definition Questions</h2>
+    <div class="questions definition-questions">
+      <ul>
+        <li *ngFor="let question of testSample.definitionAnswers">
+          Question {{ question.defQuestionId }}:
+          <strong>{{ question.term }}</strong>
+          <input
+            type="text"
+            [(ngModel)]="question.answeredDefinition"
+            placeholder="Enter your answer here"
+          />
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <button (click)="submitTestSample()">Submit Test Sample</button>
+  </section>
+</div>

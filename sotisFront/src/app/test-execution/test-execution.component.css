@@ -45,6 +45,7 @@
 .connect-questions .terms {
   display: flex;
   justify-content: space-between;
+  gap: 20px; /* Add some space between the columns */
 }
 
 .connect-questions h3 {
@@ -65,10 +66,11 @@
 }
 
 .connect-questions li {
-  background-color: #f4f4f4;
   margin: 5px 0;
-  padding: 5px 10px;
+  padding: 10px; /* Increased padding for better click area */
   border-radius: 4px;
+  cursor: pointer; /* Change cursor to indicate interactiveness */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
 .definition-questions ul {
@@ -81,5 +83,5 @@
   border-left: 4px solid #007bff;
   padding: 10px;
   margin-bottom: 5px;
-  border-radius: 4px;
+  border-radius: 3px;
 }

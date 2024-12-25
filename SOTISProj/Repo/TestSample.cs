@@ -8,6 +8,9 @@
         public Test Test { get; set; }
         public ICollection<DefinitionAnswer> DefinitionAnswers { get; set; } 
         public ICollection<ConnectAnswer> ConnectAnswers { get; set; }
-        public TestSample() { }
+        public TestSample() { 
+            DefinitionAnswers = new List<DefinitionAnswer>();
+            ConnectAnswers = new List<ConnectAnswer>();
+        }
     }
 }
