@@ -18,9 +18,8 @@ def check_single_term_pair(term, parent):
             return True
         else:
             return False
+        
 
-
-# Example usage
 if __name__ == "__main__":
     term = sys.argv[1]
     parent = sys.argv[2]

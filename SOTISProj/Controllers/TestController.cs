@@ -30,10 +30,19 @@ namespace SOTISProj.Controllers
                 {
                     string finalResult = RunPythonScript("..\\SOTISProj\\PythonScripts\\check_connect.py", $"\"{cA.BelongTerm}\" \"{cA.BelongingTerm}\"");
                     if (finalResult == null)
-                        return BadRequest("Error adding relations.");
+                        return BadRequest("Error grading connect answers.");
                     if (finalResult.StartsWith("correct"))
                         cA.IsCorrect = true;
                 }
+            }
+            foreach (var defAnsw in testSampleDTO.DefinitionAnswers)
+            {
+                string finalResult = RunPythonScript("..\\SOTISProj\\PythonScripts\\check_def.py", $"\"{defAnsw.Term}\" \"{defAnsw.AnsweredDefinition}\"");
+                if (finalResult == null)
+                    return BadRequest("Error grading definition answers.");
+                if (finalResult.StartsWith("Correct"))
+                    defAnsw.IsCorrect = true;
+                
             }
             return Ok(_testService.CreateTestSample(testSampleDTO));
         }
