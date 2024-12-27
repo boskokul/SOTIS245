@@ -57,11 +57,24 @@ namespace SOTISProj
                         ValidAudience = "explorer-front.com",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecureKeyWithAtLeast32Characters"))
                     };
-             });
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("AuthenticationTokens-Expired", "true");
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
+            });
             builder.Services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
-                options.AddPolicy("StudentPolicy", policy => policy.RequireRole("Student"));
+                options.AddPolicy("AdminPolicy", policy => policy.RequireRole("admin"));
+                options.AddPolicy("StudentPolicy", policy => policy.RequireRole("student"));
             });
             var app = builder.Build();
 
@@ -74,6 +87,7 @@ namespace SOTISProj
             app.UseHttpsRedirection();
 
             app.UseCors("AllowAll");
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

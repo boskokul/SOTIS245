@@ -10,9 +10,9 @@ namespace SOTISProj.Util
 {
     public class TokenGenerator : ITokenGenerator
     {
-        private readonly string _key = Environment.GetEnvironmentVariable("JWT_KEY") ?? "YourSuperSecureKeyWithAtLeast32Characters";
-        private readonly string _issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "explorer";
-        private readonly string _audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "explorer-front.com";
+        private readonly string _key = "YourSuperSecureKeyWithAtLeast32Characters";
+        private readonly string _issuer = "explorer";
+        private readonly string _audience = "explorer-front.com";
 
         public Result<AuthenticationTokensDTO> GenerateAccessToken(User user)
         {
