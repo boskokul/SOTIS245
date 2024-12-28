@@ -170,3 +170,18 @@ button:hover {
 .incorrect {
   color: red;
 }
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+  color: #1e1919;
+}

@@ -62,4 +62,5 @@ export interface TestSample {
   test: Test;
   definitionAnswers: DefinitionAnswer[];
   connectAnswers: ConnectAnswer[];
+  correctness: number;
 }

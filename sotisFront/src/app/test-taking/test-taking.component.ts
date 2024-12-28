@@ -33,6 +33,28 @@ export class TestTakingComponent {
       .getTestsByFieldTestSamples(this.tabs[index])
       .subscribe((data: TestSample[]) => {
         this.testSamples = data;
+        this.testSamples.forEach((t) => {
+          const correctDef = t.definitionAnswers.filter(
+            (dAnswer) => dAnswer.isCorrect
+          ).length;
+
+          const totalDef = t.definitionAnswers.length;
+
+          let correctConn = 0;
+          t.connectAnswers.forEach((answer) => {
+            correctConn += answer.connectedPairs.filter(
+              (pair) => pair.isCorrect
+            ).length;
+          });
+
+          let totalConn = 0;
+          t.connectAnswers.forEach((answer) => {
+            totalConn += answer.connectedPairs.length;
+          });
+
+          console.log(correctDef, correctConn, totalDef, totalConn);
+          t.correctness = (correctDef + correctConn) / (totalConn + totalDef);
+        });
         console.log('Test samples fetched successfully', data);
       });
   }

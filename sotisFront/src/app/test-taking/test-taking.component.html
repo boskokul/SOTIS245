@@ -28,9 +28,13 @@
     </div>
   </div>
   <div class="test-sample-list">
-    <h1>Test Samples</h1>
+    <h1>Done tests</h1>
     <div *ngFor="let sample of testSamples" class="test-sample">
-      <h2>Test Sample ID: {{ sample.id }}</h2>
+      <h2 class="heading">
+        <span class="left">Test take ID: {{ sample.id }}</span>
+        <span class="right">Result: {{ sample.correctness }}%</span>
+      </h2>
+
       <p><strong>Taken On:</strong> {{ sample.takenOn | date }}</p>
       <p>
         <strong>Student:</strong> {{ sample.student.name }}
@@ -53,7 +57,6 @@
           }})
         </li>
       </ul>
-
       <h3>Connect Answers</h3>
       <div *ngFor="let answer of sample.connectAnswers">
         <h4>Question ID: {{ answer.question.id }}</h4>
