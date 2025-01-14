@@ -1,28 +1,109 @@
-.container {
+/* General Styles */
+body {
   font-family: Arial, sans-serif;
-  padding: 20px;
-}
-
-h1,
-h2 {
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
   color: #333;
 }
 
-.actions,
-.categories,
-.tests {
-  margin-bottom: 20px;
+.container {
+  max-width: 800px;
+  margin: 80px auto 0;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-button {
-  margin: 5px 0;
-  padding: 10px 15px;
-  font-size: 14px;
+h1, h2 {
+  text-align: center;
+  color: #444;
+}
+
+/* Navbar Styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.navbar .logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.navbar .nav-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.navbar .nav-links button {
+  background-color: white;
+  color: #007bff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
   cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
 }
 
-button:hover {
+.navbar .nav-links button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Responsive Container */
+.container {
+  margin-top: 100px;
+}
+
+/* Button Styles */
+button {
   background-color: #007bff;
   color: white;
   border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 16px;
 }
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Categories Section */
+.categories-buttons,
+.tests-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.categories-buttons button {
+  flex: 1 1 calc(50% - 20px); /* Adjust width to half with spacing */
+  max-width: 200px;
+  text-align: center;
+}
+
+/* Tests Section */
+.tests {
+  margin-top: 30px;
+  text-align: center;
+}
+

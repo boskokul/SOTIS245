@@ -87,14 +87,23 @@ export class ApiService {
   getUser(): User {
     const jwtHelperService = new JwtHelperService();
     const accessToken = this.tokenStorage.getAccessToken() || '';
-    const user: User = {
-      id: +jwtHelperService.decodeToken(accessToken).id,
-      username: jwtHelperService.decodeToken(accessToken).username,
-      role: jwtHelperService.decodeToken(accessToken)[
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-      ],
-    };
-    console.log(user);
-    return user;
+    if(accessToken != ''){
+      const user: User = {
+        id: +jwtHelperService.decodeToken(accessToken).id,
+        username: jwtHelperService.decodeToken(accessToken).username,
+        role: jwtHelperService.decodeToken(accessToken)[
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        ],
+      };
+      return user;
+    }else{
+      const user: User = {
+        id: 0,
+        username: '',
+        role: '',
+      };
+      return user;
+    }
+    
   }
 }

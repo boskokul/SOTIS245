@@ -28,7 +28,7 @@ export class TestComponent {
     });
   }
 
-  tabs: string[] = ['Networks', 'General', 'Reference', 'Hardware'];
+  tabs: string[] = ['Networks', "Hardware", "Human-centered Computing", "Information Systems", "Software Engineering","Mathematics in Computing","Security and Privacy"];
 
   selectTab(index: number): void {
     this.getTests(index);

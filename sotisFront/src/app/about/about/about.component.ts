@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LoginComponent } from 'src/app/auth/login/login.component';
@@ -15,7 +15,8 @@ export class AboutComponent implements OnInit {
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private service: ApiService
+    private service: ApiService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -60,5 +61,9 @@ export class AboutComponent implements OnInit {
       console.log('AAAAAAAA' + this.service.getUser().role);
       this.user = this.service.getUser();
     });
+  }
+  logout(){
+    this.service.logout();
+    this.user = this.service.getUser()
   }
 }

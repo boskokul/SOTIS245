@@ -1,38 +1,37 @@
+<div class="navbar">
+  <div class="logo">ACM Tester</div>
+  <div class="nav-links">
+    <span *ngIf="user">{{ user.username }}</span>
+    <button *ngIf="!user || user.username == ''" (click)="login()">Login</button>
+    <button *ngIf="user.username != ''" (click)="logout()">Logout</button>
+  </div>
+</div>
+
 <div class="container">
   <h1>Welcome!</h1>
 
-  <div class="actions">
-    <button (click)="login()">Login</button>
-  </div>
-
   <div class="categories">
     <h2>Explore Categories</h2>
-    <button (click)="navigateToNetworksPage()">Go to Networks Page</button>
-    <button (click)="navigateToHardwarePage()">Go to Hardware Page</button>
-    <button (click)="navigateToNetworksPage()">
-      Go to Human-centered Computing Page
-    </button>
-    <button (click)="navigateToNetworksPage()">
-      Go to Information Systems Page
-    </button>
-    <button (click)="navigateToNetworksPage()">
-      Go to Software Engineering Page
-    </button>
-    <button (click)="navigateToNetworksPage()">
-      Go to Mathematics in Computing Page
-    </button>
-    <button (click)="navigateToNetworksPage()">
-      Go to Security and Privacy Page
-    </button>
+    <div class="categories-buttons">
+      <button (click)="navigateToNetworksPage()">Networks</button>
+      <button (click)="navigateToHardwarePage()">Hardware</button>
+      <button (click)="navigateToNetworksPage()">Human-centered Computing</button>
+      <button (click)="navigateToNetworksPage()">Information Systems</button>
+      <button (click)="navigateToNetworksPage()">Software Engineering</button>
+      <button (click)="navigateToNetworksPage()">Mathematics in Computing</button>
+      <button (click)="navigateToNetworksPage()">Security and Privacy</button>
+    </div>
   </div>
 
   <div class="tests" *ngIf="user.role">
     <h2>Tests</h2>
-    <button (click)="navigateToTestsCreation()" *ngIf="user.role === 'admin'">
-      Create Tests
-    </button>
-    <button (click)="navigateToTestsTaking()" *ngIf="user.role === 'student'">
-      Take Tests
-    </button>
+    <div class="tests-buttons">
+      <button (click)="navigateToTestsCreation()" *ngIf="user.role === 'admin'">
+        Create Tests
+      </button>
+      <button (click)="navigateToTestsTaking()" *ngIf="user.role === 'student'">
+        Take Tests
+      </button>
+    </div>
   </div>
 </div>
