@@ -2,34 +2,45 @@
   <div class="logo">ACM Tester</div>
   <div class="nav-links">
     <span *ngIf="user">{{ user.username }}</span>
-    <button *ngIf="!user || user.username == ''" (click)="login()">Login</button>
+    <button *ngIf="!user || user.username == ''" (click)="login()">
+      Login
+    </button>
     <button *ngIf="user.username != ''" (click)="logout()">Logout</button>
   </div>
 </div>
-
 <div class="container">
   <h1>Welcome!</h1>
-
-  <div class="categories">
+  <div class="categories" *ngIf="user.role === 'admin'">
     <h2>Explore Categories</h2>
     <div class="categories-buttons">
       <button (click)="navigateToNetworksPage()">Networks</button>
       <button (click)="navigateToHardwarePage()">Hardware</button>
-      <button (click)="navigateToNetworksPage()">Human-centered Computing</button>
+      <button (click)="navigateToNetworksPage()">
+        Human-centered Computing
+      </button>
       <button (click)="navigateToNetworksPage()">Information Systems</button>
       <button (click)="navigateToNetworksPage()">Software Engineering</button>
-      <button (click)="navigateToNetworksPage()">Mathematics in Computing</button>
+      <button (click)="navigateToNetworksPage()">
+        Mathematics in Computing
+      </button>
       <button (click)="navigateToNetworksPage()">Security and Privacy</button>
     </div>
   </div>
 
   <div class="tests" *ngIf="user.role">
-    <h2>Tests</h2>
     <div class="tests-buttons">
-      <button (click)="navigateToTestsCreation()" *ngIf="user.role === 'admin'">
+      <button
+        style="background-color: greenyellow; color: black"
+        (click)="navigateToTestsCreation()"
+        *ngIf="user.role === 'admin'"
+      >
         Create Tests
       </button>
-      <button (click)="navigateToTestsTaking()" *ngIf="user.role === 'student'">
+      <button
+        style="background-color: greenyellow; color: black"
+        (click)="navigateToTestsTaking()"
+        *ngIf="user.role === 'student'"
+      >
         Take Tests
       </button>
     </div>

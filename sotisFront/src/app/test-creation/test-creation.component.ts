@@ -8,25 +8,26 @@ import { ApiService } from '../services/api.service';
 @Component({
   selector: 'app-test-creation',
   templateUrl: './test-creation.component.html',
-  styleUrls: ['./test-creation.component.css']
+  styleUrls: ['./test-creation.component.css'],
 })
 export class TestCreationComponent {
-
   testCreationForm: FormGroup;
 
-   testForm: TestForm ={
-    fieldName: "",
-    name:"",
-    defQuestionsNum:5,
-    conQuestionsNum: []
-  }
-  constructor(private dialogRef: MatDialogRef<TestCreationComponent>,private fb: FormBuilder,
-    private service: ApiService,
+  testForm: TestForm = {
+    fieldName: '',
+    name: '',
+    defQuestionsNum: 5,
+    conQuestionsNum: [],
+  };
+  constructor(
+    private dialogRef: MatDialogRef<TestCreationComponent>,
+    private fb: FormBuilder,
+    private service: ApiService
   ) {
     this.testCreationForm = this.fb.group({
       name: ['', [Validators.required]],
       field: ['', [Validators.required]],
-      defQuestion:[null, [Validators.required, Validators.min(1)]],
+      defQuestion: [null, [Validators.required, Validators.min(1)]],
       fields: this.fb.array([]),
     });
   }
@@ -37,10 +38,9 @@ export class TestCreationComponent {
   addFieldPair() {
     const fieldGroup = this.fb.group({
       termNum: [null, [Validators.required, Validators.min(1)]], // First field
-      parentNum: [null, [Validators.required, Validators.min(1)]]  // Second field
+      parentNum: [null, [Validators.required, Validators.min(1)]], // Second field
     });
     this.fields.push(fieldGroup);
-
   }
 
   // Method to remove a field group by index
@@ -50,32 +50,31 @@ export class TestCreationComponent {
 
   onSubmit() {
     if (this.testCreationForm.valid) {
-      let hasErrors = false
+      let hasErrors = false;
       this.fields.controls.forEach((control, index) => {
-        if(control.get("termNum")?.value > control.get("parentNum")?.value){
-          alert("Parent number must be grater or equal to Term number.")
-          hasErrors = true
+        if (control.get('termNum')?.value > control.get('parentNum')?.value) {
+          alert('Parent number must be grater or equal to Term number.');
+          hasErrors = true;
         }
-        
-      })
-      if(this.fields.controls.length == 0){
-        hasErrors = true
-        alert("Test must contain at least one connection question")
+      });
+      if (this.fields.controls.length == 0) {
+        hasErrors = true;
+        alert('Test must contain at least one connection question');
       }
-      if(!hasErrors){
-        this.testForm.name = this.testCreationForm.get("name")?.value || ""
-      this.testForm.fieldName = this.testCreationForm.get("field")?.value || ""
-      this.testForm.defQuestionsNum = this.testCreationForm.get("defQUestions")?.value || 2
-      
-      this.fields.controls.forEach((control, index) => {
-        
-        this.testForm.conQuestionsNum.push(control.value)
-      })
-        this.service.createTest(this.testForm).subscribe(any =>{
-          this.dialogRef.close()
-        })
+      if (!hasErrors) {
+        this.testForm.name = this.testCreationForm.get('name')?.value || '';
+        this.testForm.fieldName =
+          this.testCreationForm.get('field')?.value || '';
+        this.testForm.defQuestionsNum =
+          this.testCreationForm.get('defQuestion')?.value || 2;
+
+        this.fields.controls.forEach((control, index) => {
+          this.testForm.conQuestionsNum.push(control.value);
+        });
+        this.service.createTest(this.testForm).subscribe((any) => {
+          this.dialogRef.close();
+        });
       }
-      
     }
   }
 }

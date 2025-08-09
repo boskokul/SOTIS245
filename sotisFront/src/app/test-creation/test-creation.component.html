@@ -1,62 +1,96 @@
 <div>
-    <h1>Test creation</h1>
-    <div>
-       <form [formGroup]="testCreationForm">
-        <div>
-            <label for="name">Name:</label>
-            <input type="text" id="name" formControlName="name" />
-            <div *ngIf="testCreationForm.get('name')?.invalid && testCreationForm.get('name')?.touched">
-              Name is required.
-            </div>
+  <h1>Test creation</h1>
+  <div>
+    <form [formGroup]="testCreationForm">
+      <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" formControlName="name" />
+        <div
+          *ngIf="
+            testCreationForm.get('name')?.invalid &&
+            testCreationForm.get('name')?.touched
+          "
+        >
+          Name is required.
         </div>
-        <div>
-            <label for="field">Field:</label>
-            <input type="text" id="field" formControlName="field" />
-            <div *ngIf="testCreationForm.get('field')?.invalid && testCreationForm.get('field')?.touched">
-              Field is required.
-            </div>
+      </div>
+      <div>
+        <label for="field">Field:</label>
+        <input type="text" id="field" formControlName="field" />
+        <div
+          *ngIf="
+            testCreationForm.get('field')?.invalid &&
+            testCreationForm.get('field')?.touched
+          "
+        >
+          Field is required.
         </div>
-        <div>
-            <label for="defQuestion">Number of definition questions:</label>
-            <input type="number" id="defQuestion" formControlName="defQuestion" />
-            <div *ngIf="testCreationForm.get('defQuestion')?.invalid && testCreationForm.get('defQuestion')?.touched">
-              Number of definition questions is required.
-            </div>
-            <div *ngIf="testCreationForm.get('defQuestion')?.errors?.['min'] && testCreationForm.get('defQuestion')?.touched">
-                The number must be greater than 0.
-            </div>
+      </div>
+      <div>
+        <label for="defQuestion">Number of definition questions:</label>
+        <input type="number" id="defQuestion" formControlName="defQuestion" />
+        <div
+          *ngIf="
+            testCreationForm.get('defQuestion')?.invalid &&
+            testCreationForm.get('defQuestion')?.touched
+          "
+        >
+          Number of definition questions is required.
         </div>
-        <div>
-            <label>Connect questions</label>
-            
+        <div
+          *ngIf="testCreationForm.get('defQuestion')?.errors?.['min'] && testCreationForm.get('defQuestion')?.touched"
+        >
+          The number must be greater than 0.
         </div>
-        <div formArrayName="fields">
-            <div *ngFor="let group of fields.controls; let i = index" [formGroupName]="i">
-              <!-- First Field -->
-              <div>
-                <label for="field1-{{ i }}">Terms number:</label>
-                <input type="number" id="field1-{{ i }}" formControlName="termNum" />
-              </div>
-        
-              <!-- Second Field -->
-              <div>
-                <label for="field2-{{ i }}">Parents number:</label>
-                <input type="number" id="field2-{{ i }}" formControlName="parentNum" />
-              </div>
-        
-              <!-- Error Message -->
-              <!-- <div *ngIf="group.errors?.['fieldOrderInvalid'] && group.touched">
+      </div>
+      <div>
+        <label>Connect questions</label>
+      </div>
+      <div formArrayName="fields">
+        <div
+          *ngFor="let group of fields.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <!-- First Field -->
+          <div>
+            <label for="field1-{{ i }}">Terms number:</label>
+            <input
+              type="number"
+              id="field1-{{ i }}"
+              formControlName="termNum"
+            />
+          </div>
+
+          <!-- Second Field -->
+          <div>
+            <label for="field2-{{ i }}">Parents number:</label>
+            <input
+              type="number"
+              id="field2-{{ i }}"
+              formControlName="parentNum"
+            />
+          </div>
+
+          <!-- Error Message -->
+          <!-- <div *ngIf="group.errors?.['fieldOrderInvalid'] && group.touched">
                 Field 1 must be smaller than Field 2.
               </div> -->
-        
-              <button type="button" (click)="removeField(i)">Remove</button>
-            </div>
-          </div>
-        
-          <!-- Add Field Pair Button -->
-          <button type="button" (click)="addFieldPair()">Add Field Pair</button>
-          <button type="submit" [disabled]="testCreationForm.invalid" (click)="onSubmit()">Submit</button>
-        
-       </form> 
-    </div>
+
+          <button type="button" (click)="removeField(i)">Remove</button>
+        </div>
+      </div>
+
+      <!-- Add Field Pair Button -->
+      <button type="button" (click)="addFieldPair()">
+        Add Connection Question
+      </button>
+      <button
+        type="submit"
+        [disabled]="testCreationForm.invalid"
+        (click)="onSubmit()"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
 </div>

@@ -1,4 +1,12 @@
 <div>
+  <div class="navbar">
+    <div class="logo">ACM Tester</div>
+    <div class="nav-links">
+      <span *ngIf="user">{{ user.username }}</span>
+      <button *ngIf="user.username != ''" (click)="logout()">Logout</button>
+    </div>
+  </div>
+
   <div class="tab-container">
     <button
       *ngFor="let tab of tabs; let i = index"
@@ -32,7 +40,7 @@
     <div *ngFor="let sample of testSamples" class="test-sample">
       <h2 class="heading">
         <span class="left">Test take ID: {{ sample.id }}</span>
-        <span class="right">Result: {{ sample.correctness }}%</span>
+        <span class="right">Result: {{ sample.correctness * 100 }}%</span>
       </h2>
 
       <p><strong>Taken On:</strong> {{ sample.takenOn | date }}</p>

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from '../services/api.service';
 import { TestDetailComponent } from '../test-detail/test-detail.component';
 import { TestExecutionComponent } from '../test-execution/test-execution.component';
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-test-taking',
@@ -11,11 +12,25 @@ import { TestExecutionComponent } from '../test-execution/test-execution.compone
   styleUrls: ['./test-taking.component.css'],
 })
 export class TestTakingComponent {
+  user: User = { id: 0, role: 'nothing', username: '' };
   constructor(private dialog: MatDialog, private service: ApiService) {}
   tests: Test[] = [];
   testSamples: TestSample[] = [];
 
-  tabs: string[] = ['Networks', 'General', 'Reference', 'Hardware'];
+  tabs: string[] = [
+    'Networks',
+    'Hardware',
+    'Human-centered Computing',
+    'Information Systems',
+    'Software Engineering',
+    'Mathematics in Computing',
+    'Security and Privacy',
+  ];
+
+  ngOnInit(): void {
+    this.user = this.service.getUser();
+    console.log('AAAAAAAA' + this.service.getUser().role);
+  }
 
   selectTab(index: number): void {
     this.getTests(index);
@@ -70,5 +85,10 @@ export class TestTakingComponent {
       console.log('The dialog was closed');
       // this.getTests(0)
     });
+  }
+
+  logout() {
+    this.service.logout();
+    this.user = this.service.getUser();
   }
 }

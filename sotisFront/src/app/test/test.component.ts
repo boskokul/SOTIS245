@@ -4,6 +4,7 @@ import { TestCreationComponent } from '../test-creation/test-creation.component'
 import { ApiService } from '../services/api.service';
 import { Test } from '../model/test';
 import { TestDetailComponent } from '../test-detail/test-detail.component';
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-test',
@@ -11,9 +12,16 @@ import { TestDetailComponent } from '../test-detail/test-detail.component';
   styleUrls: ['./test.component.css'],
 })
 export class TestComponent {
+  user: User = { id: 0, role: 'nothing', username: '' };
   heading = 'Test management';
   constructor(private dialog: MatDialog, private service: ApiService) {}
   tests: Test[] = [];
+
+  ngOnInit(): void {
+    this.user = this.service.getUser();
+    console.log('AAAAAAAA' + this.service.getUser().role);
+  }
+
   showModalDialog() {
     const dialogRef = this.dialog.open(TestCreationComponent, {
       width: '700px',
@@ -28,7 +36,15 @@ export class TestComponent {
     });
   }
 
-  tabs: string[] = ['Networks', "Hardware", "Human-centered Computing", "Information Systems", "Software Engineering","Mathematics in Computing","Security and Privacy"];
+  tabs: string[] = [
+    'Networks',
+    'Hardware',
+    'Human-centered Computing',
+    'Information Systems',
+    'Software Engineering',
+    'Mathematics in Computing',
+    'Security and Privacy',
+  ];
 
   selectTab(index: number): void {
     this.getTests(index);
@@ -52,5 +68,10 @@ export class TestComponent {
       console.log('The dialog was closed');
       // this.getTests(0)
     });
+  }
+
+  logout() {
+    this.service.logout();
+    this.user = this.service.getUser();
   }
 }

@@ -1,5 +1,11 @@
-<input type="file" (change)="onFileSelected($event)" />
-<button (click)="onButtonClick()">Upload</button>
+<div class="button-group">
+  <label for="fileInput" class="custom-button upload-button">
+    📁 Choose File
+  </label>
+  <span class="file-name">{{ selectedFile?.name || "No file selected" }}</span>
+  <button class="custom-button action-button">🚀 Upload</button>
+</div>
+<input type="file" (change)="onFileSelected($event)" id="fileInput" hidden />
 
 <div *ngIf="fileUrls.length === 0">
   <p>Please select a file to upload.</p>
