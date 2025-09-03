@@ -30,7 +30,7 @@ def functionLLM(text: str):
         
         }
     ],
-    model="llama3-70b-8192",
+    model="llama-3.3-70b-versatile",
     )
     return chat_completion.choices[0].message.content
 
@@ -54,11 +54,3 @@ for match in matches:
         print("No JSON data found.")
 
 # print(relacije[0])
-
-
-    
-    
-
-
-
-

@@ -3,7 +3,9 @@
     📁 Choose File
   </label>
   <span class="file-name">{{ selectedFile?.name || "No file selected" }}</span>
-  <button class="custom-button action-button">🚀 Upload</button>
+  <button class="custom-button action-button" (click)="onButtonClick()">
+    🚀 Upload
+  </button>
 </div>
 <input type="file" (change)="onFileSelected($event)" id="fileInput" hidden />
 

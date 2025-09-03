@@ -40,7 +40,7 @@ def functionLLM(term: str, definition1: str, definition2: str):
             f"{definition2}"
         }
     ],
-    model="llama3-70b-8192",
+    model="llama-3.3-70b-versatile",
     )
     return chat_completion.choices[0].message.content
 
